@@ -11,8 +11,10 @@ ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS", default="127.0.0.1,localhost", cast=Csv()
 )
 
+INTERNAL_IPS = ['127.0.0.1', '0.0.0.0', 'localhost']
+
 INSTALLED_APPS = [
-    # default apps
+    # def
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -22,10 +24,12 @@ INSTALLED_APPS = [
 
     # project apps
     'accounts',
+    'home',
 
     # libs and packages
     'django_render_partial',
     'widget_tweaks',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -36,6 +40,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'config.middleware.AdminRestrictMiddleware',
+    'config.middleware.NoIndexAdminMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -84,8 +91,8 @@ USE_L10N = True
 USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 # STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

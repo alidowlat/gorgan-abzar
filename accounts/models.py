@@ -18,13 +18,11 @@ class User(AbstractUser):
         max_length=40,
         null=True,
         blank=True,
-        verbose_name="نام"
     )
     last_name = models.CharField(
         max_length=40,
         null=True,
         blank=True,
-        verbose_name="نام خانوادگی"
     )
     phone_number = models.CharField(
         validators=[phone_regex],
@@ -32,23 +30,20 @@ class User(AbstractUser):
         max_length=11,
         blank=False,
         null=False,
-        verbose_name="شماره موبایل"
     )
     email = models.EmailField(
         unique=True,
         null=True,
         blank=True,
-        verbose_name='ایمیل'
     )
     otp = models.CharField(
         max_length=5,
         validators=[otp_regex],
         null=True,
         blank=True,
-        verbose_name="کد تایید"
     )
     otp_create_at = models.DateTimeField(auto_now=True, null=True, blank=True)
-    is_verified = models.BooleanField(default=False, verbose_name="تایید شده؟")
+    is_verified = models.BooleanField(default=False)
 
     def get_full_name(self):
         return f"{(self.first_name or '').strip()} {(self.last_name or '').strip()}".strip()
