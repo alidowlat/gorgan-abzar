@@ -8,6 +8,7 @@ from config import settings
 urlpatterns = [
     path('ga-moazzen-manager/', admin.site.urls),
     path('', include('home.urls')),
+    path('auth/', include('accounts.urls')),
 ]
 
 django.conf.urls.handler404 = home.views.handler_404

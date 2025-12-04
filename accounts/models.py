@@ -42,7 +42,7 @@ class User(AbstractUser):
         null=True,
         blank=True,
     )
-    otp_create_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    otp_created_at = models.DateTimeField(null=True, blank=True)
     is_verified = models.BooleanField(default=False)
 
     def get_full_name(self):

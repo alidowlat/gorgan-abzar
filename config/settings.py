@@ -13,6 +13,7 @@ ALLOWED_HOSTS = config(
 
 INTERNAL_IPS = ['127.0.0.1', '0.0.0.0', 'localhost']
 
+
 INSTALLED_APPS = [
     # def
     'django.contrib.admin',
@@ -25,6 +26,7 @@ INSTALLED_APPS = [
     # project apps
     'accounts',
     'home',
+    'core',
 
     # libs and packages
     'django_render_partial',
@@ -96,3 +98,5 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+Kavenegar_API = config("KAVENEGAR_API")
