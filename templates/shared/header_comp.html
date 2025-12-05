@@ -124,7 +124,8 @@
                             </svg>
                             اطلاعات کاربری
                         </a>
-                        <a href="{% url 'logout' %}" class="flex items-center gap-x-2  hover:bg-red-500 dark:hover:bg-red-500 hover:text-gray-100">
+                        <a href="{% url 'logout' %}"
+                           class="flex items-center gap-x-2  hover:bg-red-500 dark:hover:bg-red-500 hover:text-gray-100">
                             <svg class="h-5 w-5">
                                 <use href="#arrow-left-end"></use>
                             </svg>
@@ -254,7 +255,7 @@
         <!-- MENU -->
         <ul class="flex items-center gap-x-8">
             <li class="menu-item">
-                <a href="index.html" class="menu-item_link">
+                <a href="{% url 'home_page' %}" class="menu-item_link">
                     صفحه اصلی
                 </a>
             </li>
