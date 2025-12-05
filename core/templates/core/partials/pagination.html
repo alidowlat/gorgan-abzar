@@ -1,0 +1,41 @@
+<div class="mt-10 w-full flex items-center justify-center">
+    <ul class="flex items-center gap-x-3 child:flex child:items-center child:justify-center child:w-8 child:h-8 child:cursor-pointer child:shadow child:rounded-lg child:transition-all child:duration-300">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}"
+               class="bg-white dark:bg-gray-800 hover:bg-gray-800 dark:hover:bg-blue-500 hover:text-white">
+                <div>
+                    <svg class="size-5 rotate-180">
+                        <use href="#chevron-left"></use>
+                    </svg>
+                </div>
+            </a>
+        {% endif %}
+
+        {% for p in pages %}
+            {% if p == page_obj.number %}
+                <a href="?page={{ p }}" class="text-white bg-blue-500">
+                    <p>{{ p }}</p>
+                </a>
+            {% elif p == '...' %}
+                <li class="bg-white dark:bg-gray-800 hover:bg-blue-500 dark:hover:bg-blue-500 hover:text-white">
+                    ...
+                </li>
+            {% else %}
+                <a href="?page={{ p }}" class="bg-white dark:bg-gray-800 hover:bg-blue-500 dark:hover:bg-blue-500 hover:text-white">
+                    <p>{{ p }}</p>
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"
+               class="bg-white dark:bg-gray-800 hover:bg-gray-800 dark:hover:bg-blue-500 hover:text-white">
+                <div>
+                    <svg class="size-5">
+                        <use href="#chevron-left"></use>
+                    </svg>
+                </div>
+            </a>
+        {% endif %}
+    </ul>
+</div>

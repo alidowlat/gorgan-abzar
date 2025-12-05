@@ -1,0 +1,5 @@
+{% for product in products %}
+    {% include 'product/list/components/card.html' with product=product %}
+{% empty %}
+    <p>محصولی یافت نشد!</p>
+{% endfor %}

@@ -22,7 +22,7 @@ class Product(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)]
     )
     guarantee = models.CharField(max_length=75, null=True, blank=True)
-    description = models.TextField(max_length=800, verbose_name='توضیحات')
+    description = models.TextField(max_length=800, null=True, blank=True)
     category = models.ForeignKey('product.ProductCategory', on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
     brand = models.ForeignKey('product.Brand', on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -64,6 +64,10 @@ class Product(models.Model):
         if self.discount_rate > 0:
             return self.price - (self.price * self.discount_rate // 100)
         return self.price
+
+    @property
+    def first_gallery(self):
+        return self.galleries.first()
 
     class Meta:
         verbose_name = 'Product'

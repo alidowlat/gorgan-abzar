@@ -1,4 +1,5 @@
 import os
+import secrets
 
 from django.core.files.storage import FileSystemStorage
 from django.utils.text import slugify
@@ -11,9 +12,18 @@ class OverwriteStorage(FileSystemStorage):
         return name
 
 
-def get_image_upload_to(instance):
+def get_image_upload_to(instance, original_filename):
     model_name = instance.__class__.__name__.lower()
     name_part = getattr(instance, 'username', None) or getattr(instance, 'slug', None) or model_name
     slug_name = slugify(name_part)
     filename = f"{slug_name}.webp"
     return os.path.join(model_name, slug_name, filename)
+
+
+def get_gallery_upload_to(instance, filename):
+    product_slug = instance.product.slug
+
+    ext = ".webp"
+    rand = secrets.token_hex(4)  # 8 کاراکتر، کافی، زیبا، امن
+
+    return f"gallery/{product_slug}/{rand}{ext}"
