@@ -3,6 +3,7 @@ import io
 from PIL import Image
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.urls import reverse
 
 from core.media_path import get_image_upload_to, OverwriteStorage
 
@@ -56,8 +57,7 @@ class Product(models.Model):
             f.write(buffer.getvalue())
 
     def get_absolute_url(self):
-        # return reverse('service_detail', kwargs={'slug': self.slug})
-        pass
+        return reverse('product_detail', kwargs={'slug': self.slug})
 
     @property
     def final_price(self):

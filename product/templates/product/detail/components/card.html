@@ -1,5 +1,7 @@
 {% load extra_filters %}
-<div class="product-card group">
+<div class="swiper-slide product-card group swiper-slide-active" style="width: 281px; margin-left: 20px;"
+     role="group"
+     aria-label="{{ forloop.first }} / {{ forloop.last }}">
     <!-- product header -->
     <div class="product-card_header">
         <div class="flex items-center gap-x-2">
@@ -24,6 +26,7 @@
                 </div>
             </div>
         </div>
+        <!-- badge offer -->
         {% if product.discount_rate %}
             <span class="product-card_badge">{{ product.discount_rate }}% تخفیف‌</span>
         {% endif %}
