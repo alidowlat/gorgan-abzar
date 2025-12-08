@@ -1,4 +1,4 @@
-<div class="mt-10 w-full flex items-center justify-center">
+<div id="pagination-wrapper" class="mt-10 w-full flex items-center justify-center">
     <ul class="flex items-center gap-x-3 child:flex child:items-center child:justify-center child:w-8 child:h-8 child:cursor-pointer child:shadow child:rounded-lg child:transition-all child:duration-300">
         {% if page_obj.has_previous %}
             <a href="?page={{ page_obj.previous_page_number }}"

@@ -7,6 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %} | {{ SITE_TITLE }}</title>
     {% render_partial 'home.views.site_header_component' %}
+    <link rel="stylesheet" href="/static/css/swiper-bundle.css">
+    <style>
+        #global-loader {
+            z-index: 999999 !important;
+            position: fixed !important;
+        }
+    </style>
     <meta name="description" content="#">
     <meta name="keywords" content="}">
     <meta name="author" content="#">

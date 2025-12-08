@@ -1,61 +1,4 @@
-
-// COLOR SELCET
-const colorButtons = document.querySelectorAll(".color-select-btn");
-const colorTitle = document.querySelector(".color-title");
-
-colorButtons?.forEach((button) => {
-    button.addEventListener("click", () => {
-        colorButtons.forEach((btn) => {
-            btn.classList.remove("ring-4", "ring-blue-400");
-            btn.classList.add("ring-1", "ring-gray-400");
-        });
-
-        button.classList.remove("ring-1", "ring-gray-400");
-        button.classList.add("ring-4", "ring-blue-400");
-
-        const span = button.querySelector("span");
-        const classList = span.classList;
-        const colorClass = Array.from(classList).find(c => c.startsWith("bg-"));
-
-        const colorMap = {
-            "bg-black": "مشکی",
-            "bg-white": "سفید",
-            "bg-green-400": "سبز",
-            "bg-blue-500": "آبی"
-        };
-
-        const colorName = colorMap[colorClass] || "نامشخص";
-        colorTitle.textContent = `رنگ : ${colorName}`;
-    });
-});
-
-
-
-// TEXT SLIDER 
-document.addEventListener("DOMContentLoaded", () => {
-    const texts = [
-        { text: "🔥 ۱۰۰۰+ فروش در هفته گذشته", color: "text-red-500" },
-        { text: "💯 ۵۰۰+ نفر بیش از ۲ بار این کالا را خریده‌اند", color: "text-green-600" },
-        { text: "🛒 در سبد خرید ۱۰۰۰+ نفر", color: "text-blue-600" }
-    ];
-
-    let index = 0;
-    const slider = document.getElementById("slider-text");
-
-    setInterval(() => {
-        index = (index + 1) % texts.length;
-        slider.classList.add("opacity-0");
-
-        setTimeout(() => {
-            slider.innerHTML = `<p class="${texts[index].color}">${texts[index].text}</p>`;
-            slider.classList.remove("opacity-0");
-        }, 300);
-    }, 3000);
-});
-
-
-
-// CHANGE TAB 
+// CHANGE TAB
 document.addEventListener("DOMContentLoaded", () => {
     const buttonsTab = document.querySelectorAll(".tab-btn");
     const contents = document.querySelectorAll(".tab-content");
@@ -85,8 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
-
 // SHOW MORE COMMENTS
 const moreCommentBtn = document.querySelector('.more-comment-btn');
 const moreCommentText = document.querySelector('.more-comment-text');
@@ -111,8 +52,6 @@ if (moreCommentBtn) {
 }
 
 
-
-
 // PRODUCT SLIDER
 
 const openSliderModals = document.querySelectorAll('.open-sliderModal')
@@ -132,7 +71,11 @@ overlayProductPage.addEventListener('click', () => {
     sliderModal.classList.remove('active')
 })
 
-closeSliderModal.addEventListener('click', () => {
-    sliderModal.classList.remove('active')
-    overlayProductPage.classList.remove('active')
-})
+document.addEventListener("DOMContentLoaded", () => {
+    if (!closeSliderModal || !sliderModal || !overlayProductPage) return;
+
+    closeSliderModal.addEventListener("click", () => {
+        sliderModal.classList.remove("active");
+        overlayProductPage.classList.remove("active");
+    });
+});
