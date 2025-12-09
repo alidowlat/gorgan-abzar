@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'home',
     'core',
     'product',
+    'reviews',
 
     # libs and packages
     'django_render_partial',

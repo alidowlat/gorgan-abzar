@@ -1,0 +1,144 @@
+{% load widget_tweaks %}
+{% load extra_filters %}
+
+<style>
+    .recommendation-btn {
+        transition: .1s;
+    }
+
+    .recommendation-btn:has(input:checked).good {
+        color: #16A34A;
+        --tw-ring-color: #16A34A;
+        box-shadow: 0 0 0 2px #16A34A;
+    }
+
+    .recommendation-btn:has(input:checked).bad {
+        color: #EF4343;
+        --tw-ring-color: #EF4343;
+        box-shadow: 0 0 0 2px #EF4343;
+    }
+
+</style>
+
+<div class="w-full flex flex-col md:flex-row items-start gap-10">
+    <!-- SUBMIT COMMENT -->
+    <div class="lg:w-1/4 flex flex-col w-full">
+        <p class="font-DanaMedium text-lg mb-2">ثبت دیدگاه</p>
+
+        <input id="subject" type="text" placeholder="عنوان" class="tailwind-input">
+        <p class="text-gray-500 dark:text-white text-sm mb-4 mt-2">این محصول را به دیگران پیشنهاد:</p>
+
+        <div class="grid grid-cols-12 child:col-span-6 gap-4 child:flex child:items-center child:justify-center
+                    child:gap-x-2 child:rounded-lg child:shadow child:py-2 mb-5 child:font-DanaMedium child:duration-300">
+
+            <button class="recommendation-btn good text-green-600 ring-1 dark:ring-white/20">
+                <input type="radio" name="recommendation" value="good" class="hidden">
+                <svg class="w-5 h-5">
+                    <use href="#hand-up"></use>
+                </svg>
+                میکنم
+            </button>
+
+            <button class="recommendation-btn bad text-red-500 ring-1 dark:ring-white/20">
+                <input type="radio" name="recommendation" value="bad" class="hidden">
+                <svg class="w-5 h-5">
+                    <use href="#hand-down"></use>
+                </svg>
+                نمیکنم
+            </button>
+
+        </div>
+
+        {#        <fieldset class="flex items-center gap-4">#}
+        {#            <div class="w-full">#}
+        {#                <input type="radio" name="recommendation" id="suggest-like" value="good" class="peer hidden">#}
+        {#                <label for="suggest-like"#}
+        {#                       class="peer-checked:border-success block w-full p-2 border rounded-lg cursor-pointer">#}
+        {#                    <div class="flex items-center justify-center gap-2 text-success">#}
+        {#                        <div class="i-lucide-thumbs-up size-5"></div>#}
+        {#                        <span>میکنم</span>#}
+        {#                    </div>#}
+        {#                </label>#}
+        {#            </div>#}
+        {##}
+        {#            <div class="w-full">#}
+        {#                <input type="radio" name="recommendation" id="suggest-dislike" value="bad" class="peer hidden">#}
+        {#                <label for="suggest-dislike"#}
+        {#                       class="peer-checked:border-warning block w-full p-2 border rounded-lg cursor-pointer">#}
+        {#                    <div class="flex items-center justify-center gap-2 text-warning">#}
+        {#                        <div class="i-lucide-thumbs-down size-5"></div>#}
+        {#                        <span>نمیکنم</span>#}
+        {#                    </div>#}
+        {#                </label>#}
+        {#            </div>#}
+        {#        </fieldset>#}
+
+        <textarea id="message" class="h-24 tailwind-input" placeholder="متن دیدگاه"></textarea>
+
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+        <button onclick="sendProductReview({{ product.id }})"
+                class="rounded-lg p-2 bg-blue-500 hover:bg-blue-600 text-white transition-all mt-3">
+            ثبت
+        </button>
+
+        <p id="review-error-box" class="text-red-500 text-sm mt-2"></p>
+        <p id="review-text-error" class="text-red-500 text-sm hidden"></p>
+        <p id="review-title-error" class="text-red-500 text-sm hidden"></p>
+    </div>
+
+    <!-- ALL COMMENTS -->
+    <ul id="reviews-container" class="lg:w-3/4 flex flex-col gap-y-2 child:w-full">
+        {% include "product/detail/components/review_list.html" with reviews=reviews %}
+    </ul>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/static/scripts/actions.js"></script>
+
+<!-- HIDDEN COMMENTS (SHOW THIS AFTER 3 COMMENTS) -->
+{#        <li class="hidden-comment-item child:flex py-4 border-b border-gray-200 dark:border-b-gray-200/20 child:border-white/20 hidden">#}
+{#            <!-- TITLE -->#}
+{#            <div class="flex items-center gap-x-2">#}
+{#                <h2 class="font-DanaMedium text-lg mb-1">باطری فوق‌العاده‌اس</h2>#}
+{#                <span class="px-2 py-1 mb-2 rounded-lg bg-blue-500 text-white text-xs">خریدار</span>#}
+{#            </div>#}
+{#            <!-- COOMENT TEXT -->#}
+{#            <div class="flex-col">#}
+{#                <h2 class="flex items-center gap-x-1 text-green-500 mb-4">#}
+{#                    <svg class="w-4 h-4">#}
+{#                        <use href="#hand-up"></use>#}
+{#                    </svg>#}
+{#                    پیشنهاد میشود#}
+{#                </h2>#}
+{#                <p class="text-gray-500 dark:text-gray-200 mb-2 line-clamp-2">#}
+{#                    من باطری گوشی رو با استفاده زیاد تست کردم، دو روز کامل جواب داد. عالیه!#}
+{#                </p>#}
+{##}
+{#            </div>#}
+{#            <!-- COMMENT FOOTER -->#}
+{#            <div class="mt-2 lg:mt-0 flex-col lg:flex-row gap-y-2 lg:items-center justify-between">#}
+{#                <div class="flex items-center gap-x-4 text-gray-400 text-sm">#}
+{#                    <p>11 بهمن 1402</p>#}
+{#                    <p>امیررضا کریمی</p>#}
+{#                </div>#}
+{#                <div class="flex items-center gap-x-2 flex-wrap mt-2">#}
+{#                    <p class="text-gray-400 text-sm">آیا این دیدگاه برایتان مفید بود؟</p>#}
+{#                    <div class="flex items-center gap-x-2 child:flex child:items-center child:gap-x-1 child:rounded-lg child:p-2 child:font-DanaMedium child:duration-300#}
+{#                child:transition-all child:text-sm">#}
+{#                        <button class="text-green-600 ring-transparent ring-1 focus:ring-green-600  dark:focus:ring-green-600">#}
+{#                            78#}
+{#                            <svg class="w-4 h-4">#}
+{#                                <use href="#hand-up"></use>#}
+{#                            </svg>#}
+{#                        </button>#}
+{#                        <button class="text-red-500 ring-transparent ring-1 focus:ring-[#EF4343]  dark:focus:ring-[#EF4343]">#}
+{#                            25#}
+{#                            <svg class="w-4 h-4">#}
+{#                                <use href="#hand-down"></use>#}
+{#                            </svg>#}
+{#                        </button>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </li>#}
