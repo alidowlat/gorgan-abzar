@@ -1,0 +1,157 @@
+{% extends 'shared/base.html' %}
+
+{% block title %}
+    ارتباط با ما
+{% endblock %}
+
+{% block content %}
+    <main class="container relative">
+        <!-- Breadcrumb -->
+        <nav class="flex mt-8" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                <li class="inline-flex items-center">
+                    <a href="{% url 'home_page' %}"
+                       class="inline-flex items-center text-sm gap-x-1  text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-4 h-4 mb-0.5">
+                            <use href="#home"></use>
+                        </svg>
+                        صفحه اصلی
+                    </a>
+                </li>
+                <li aria-current="page">
+                    <div class="flex items-center">
+                        <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                             fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="m1 9 4-4-4-4"></path>
+                        </svg>
+                        <span class="ms-1 text-sm  text-gray-500 md:ms-2 dark:text-gray-400">تماس با ما</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+        <section class="relative flex items-center justify-center w-full">
+            <!-- background -->
+            <div class="pointer-events-none absolute inset-0 flex w-full items-start justify-center overflow-hidden
+    [mask-image:radial-gradient(circle_at_center,rgba(255,255,255,1)_0%,rgba(255,255,255,0)_85%)]">
+
+                <svg class="absolute left-0 top-0 h-full w-full stroke-black/10 stroke-[2]
+        [mask-image:radial-gradient(circle_at_center,rgba(255,255,255,1)_20%,rgba(255,255,255,0)_95%)] dark:stroke-white/10">
+                    <rect width="100%" height="100%" stroke-width="0" fill="url(#grid-pattern)"></rect>
+                    <defs>
+                        <pattern id="grid-pattern" viewBox="0 0 64 64" width="60" height="60" patternUnits="userSpaceOnUse">
+                            <path d="M64 0H0V64" fill="none"></path>
+                        </pattern>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="relative w-[45rem]  mx-5 my-10 flex flex-col justify-center pt-12 pb-5 px-4 md:px-8 bg-white dark:bg-gray-800 shadow-md rounded-xl">
+                <div class="sm:mx-auto sm:w-full">
+                    <p class=" text-gray-800 dark:text-gray-100 font-DanaDemiBold text-lg">تماس با ما</p>
+                    <p class="text-gray-700 dark:text-gray-200 font-Dana mt-2 mb-8">
+                        قبل از مطرح کردن هر گونه سوال بخش <a class="text-blue-500" href="questions.html">سوالات متداول</a>
+                        را مطالعه نمایید.
+                    </p>
+                    <form id="contactForm" class="space-y-5" action="{% url 'contact_us_page' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="grid grid-cols-12 gap-6">
+                            <div class="col-span-6">
+                                {{ form.name }}
+                                <p class="text-warning text-red-500 text-sm mt-1"></p>
+                            </div>
+                            <div class="col-span-6">
+                                {{ form.phone_number }}
+                                <p class="text-warning text-red-500 text-sm mt-1"></p>
+                            </div>
+                            <div class="col-span-12">
+                                {{ form.subject }}
+                                <p class="text-warning text-red-500 text-sm mt-1"></p>
+                            </div>
+                            <div class="col-span-12">
+                                {{ form.message }}
+                                <p class="text-warning text-red-500 text-sm mt-1"></p>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="submit-btn">ارسال پیام</button>
+                        </div>
+                    </form>
+                    <div class="mt-10 flex items-center justify-center gap-x-8 flex-wrap text-gray-500 dark:text-gray-400 child:flex child:items-center child:justify-center child:gap-x-1">
+                        <div>
+                            <svg class="size-5">
+                                <use href="#map"></use>
+                            </svg>
+                            <p class="text-sm">{{ SITE_SETTINGS.address }}</p>
+                        </div>
+                        <div>
+                            <a href="mailto:{{ SITE_SETTINGS.contact_email }}"
+                               class="hover:text-blue-500 transition-all">GorganAbzar</a>
+                            <svg class="size-5 mb-1">
+                                <use href="#envelope"></use>
+                            </svg>
+                        </div>
+                        <div>
+                            <a href="tel:{{ SITE_SETTINGS.phone_number }}"
+                               class="hover:text-blue-500 transition-all">{{ SITE_SETTINGS.phone_number }}</a>
+                            <svg class="size-5">
+                                <use href="#phone"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const csrftoken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            form.querySelectorAll('.text-warning').forEach(el => el.textContent = '');
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken
+                },
+                body: formData,
+                credentials: 'same-origin'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(() => {
+                            if (data.redirect_url) window.location.href = data.redirect_url;
+                            else location.reload();
+                        });
+                        form.reset();
+                    } else if (data.errors) {
+                        for (const key in data.errors) {
+                            const field = form.querySelector(`[name="${key}"]`);
+                            if (field) {
+                                const errorEl = field.parentNode.querySelector('.text-warning');
+                                if (errorEl) errorEl.textContent = data.errors[key];
+                            }
+                        }
+                    }
+                })
+                .catch(err => {
+                    Swal.fire({icon: 'error', title: 'خطا', text: 'ارتباط با سرور برقرار نشد.'});
+                    console.error(err);
+                });
+        });
+    </script>
+{% endblock %}
