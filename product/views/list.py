@@ -1,8 +1,10 @@
 from django.db.models import Count
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 
 from core.actions import apply_filters
-from product.models import Product, ProductCategory, Brand
+from product.models import Product, ProductCategory, Brand, Favorite
 
 
 class ProductListView(ListView):
@@ -13,6 +15,16 @@ class ProductListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
+        products = context.get('products', [])
+
+        if self.request.user.is_authenticated:
+            favorite_ids = set(Favorite.objects.filter(user=self.request.user)
+                               .values_list('product_id', flat=True))
+        else:
+            favorite_ids = set()
+
+        for product in products:
+            product.is_favorited = product.id in favorite_ids
 
         mobile_toggles = [
             {'id': 'available-toggle5', 'name': 'available', 'label': 'فقط کالا های موجود', 'value': 1,
@@ -60,3 +72,21 @@ class ProductListView(ListView):
                 filtered_qs = filtered_qs.order_by('-created_at')
 
         return filtered_qs
+
+
+def toggle_favorite_product(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'success': False, 'message': 'برای انجام این عملیات باید وارد حساب شوید.'}, status=403)
+
+    product_id = request.POST.get('product_id')
+    try:
+        product = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'product_not_found'}, status=404)
+
+    favorite, created = Favorite.objects.get_or_create(user=request.user, product=product)
+
+    if not created:
+        favorite.delete()
+        return JsonResponse({'status': 'removed'})
+    return JsonResponse({'status': 'added'})

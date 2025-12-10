@@ -13,6 +13,60 @@ function getCookie(name) {
     return cookieValue;
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    // همزمان svg ها را با data-is-favorited هماهنگ کن
+    document.querySelectorAll('.favorite-btn').forEach(btn => {
+        const svg = btn.querySelector('svg');
+        const isFav = btn.dataset.isFavorited === "True" || btn.dataset.isFavorited === "true";
+        svg.setAttribute('fill', isFav ? 'currentColor' : 'none');
+    });
+});
+
+document.addEventListener('click', e => {
+    const btn = e.target.closest('.favorite-btn');
+    if (!btn) return;
+
+    const productId = btn.dataset.productId;
+    const svg = btn.querySelector('svg');
+    const csrfToken = document.getElementById('csrf-token').value;
+
+    fetch('/products/toggle-favorite', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({product_id: productId})
+    })
+        .then(res => {
+            if (res.status === 403) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'برای انجام این عملیات باید وارد حساب شوید.',
+                    showCancelButton: true,
+                    confirmButtonText: 'ورود',
+                    cancelButtonText: 'انصراف',
+                    allowOutsideClick: true,
+                    allowEscapeKey: true,
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/auth/';
+                    }
+                });
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.status === 'added') {
+                svg.setAttribute('fill', 'currentColor');
+                btn.dataset.isFavorited = "true";
+            } else if (data.status === 'removed') {
+                svg.setAttribute('fill', 'none');
+                btn.dataset.isFavorited = "false";
+            }
+        });
+});
+
 document.querySelectorAll('.recommendation-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const input = btn.querySelector('input[type="radio"]');
