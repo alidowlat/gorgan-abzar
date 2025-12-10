@@ -1,6 +1,5 @@
 {% load extra_filters %}
 <div class="product-card group">
-    <!-- product header -->
     <div class="product-card_header">
         <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
         <div class="flex items-center gap-x-2">
@@ -34,27 +33,23 @@
             <span class="product-card_badge">{{ product.discount_rate }}% تخفیف‌</span>
         {% endif %}
     </div>
-    <!-- product img -->
     <a href="{{ product.get_absolute_url }}">
-        <img class="product-card_img group-hover:opacity-0 absolute"
+        <img class="product-card_img group-hover:opacity-0 absolute border-2 dark:border-gray-700 rounded-md"
              src="{{ product.image.url }}"
              alt="{{ product.title }}">
         {% if product.first_gallery %}
-            <img class="product-card_img opacity-0 group-hover:opacity-100"
+            <img class="product-card_img opacity-0 group-hover:opacity-100 border-2 dark:border-gray-700 rounded-md"
                  src="{% if product.first_gallery %}{{ product.first_gallery.image.url }}{% endif %}"
                  alt="{{ product.title }}">
         {% else %}
-            <img class="product-card_img group-hover:opacity-0 absolute"
+            <img class="product-card_img group-hover:opacity-0 absolute border-2 dark:border-gray-700 rounded-md"
                  src="{{ product.image.url }}"
                  alt="{{ product.title }}">
         {% endif %}
     </a>
-    <!--  product footer -->
     <div class="space-y-2">
         <a href="{{ product.get_absolute_url }}" class="product-card_link">{{ product.title }}</a>
-        <!-- Rate and Price -->
         <div class="product-card_price-wrapper">
-            <!-- Price -->
             <div class="product-card_price">
                 {% if product.discount_rate %}
                     <del>{{ product.price|three_digits }} <h6>تومان</h6></del>

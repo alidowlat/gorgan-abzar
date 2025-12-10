@@ -83,6 +83,10 @@
                                     class="{% if request.GET.sort_by == 'most_expensive' %}text-blue-500{% else %}text-gray-400{% endif %}">
                                 گران ترین
                             </button>
+                            <button type="submit" data-sort="most_discount"
+                                    class="{% if request.GET.sort_by == 'most_discount' %}text-blue-500{% else %}text-gray-400{% endif %}">
+                                بیشترین تخفیف
+                            </button>
                         </div>
                     </div>
                     <span class="product-count text-sm text-gray-400 end">{{ filtered_products.count }} کالا </span>

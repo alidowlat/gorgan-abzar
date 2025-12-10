@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 
-from core.actions import apply_filters
+from core.actions import apply_filters, mark_favorites
 from product.models import Product, ProductCategory, Brand, Favorite
 
 
@@ -15,16 +15,8 @@ class ProductListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
-        products = context.get('products', [])
 
-        if self.request.user.is_authenticated:
-            favorite_ids = set(Favorite.objects.filter(user=self.request.user)
-                               .values_list('product_id', flat=True))
-        else:
-            favorite_ids = set()
-
-        for product in products:
-            product.is_favorited = product.id in favorite_ids
+        mark_favorites(self.request, context['products'])
 
         mobile_toggles = [
             {'id': 'available-toggle5', 'name': 'available', 'label': 'فقط کالا های موجود', 'value': 1,
@@ -70,6 +62,8 @@ class ProductListView(ListView):
                 filtered_qs = filtered_qs.order_by('price', '-created_at')
             case 'newest':
                 filtered_qs = filtered_qs.order_by('-created_at')
+            case 'most_discount':
+                filtered_qs = filtered_qs.order_by('-discount_rate')
 
         return filtered_qs
 

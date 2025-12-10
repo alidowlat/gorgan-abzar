@@ -1,36 +1,22 @@
-# from django.db import models
-#
-#
-# class Setting(models.Model):
-#     site_name = models.CharField(max_length=35, verbose_name='عنوان')
-#     logo_1 = models.ImageField(upload_to='site_setting/logo_1', verbose_name='لوگو ۱')
-#     logo_2 = models.ImageField(upload_to='site_setting/logo_2', verbose_name='لوگو ۲')
-#     transparent_logo = models.ImageField(upload_to='site_setting/transparent_logo', verbose_name='لوگو شفاف')
-#     footer_text = models.TextField(null=True, blank=True, verbose_name="متن فوتر")
-#     contact_email = models.EmailField(null=True, blank=True, verbose_name="ایمیل وب سایت")
-#     phone_number = models.CharField(max_length=11, null=True, blank=True, verbose_name="شماره تماس وب سایت")
-#     updated_at = models.DateTimeField(auto_now=True, verbose_name="آخرین آپدیت")
-#     address = models.TextField(null=True, blank=True, verbose_name="آدرس دفتر مرکزی")
-#     is_main = models.BooleanField(default=False, unique=True, verbose_name='تنظیمات اصلی؟')
-#
-#     class Meta:
-#         verbose_name = 'Website Setting'
-#         verbose_name_plural = "Website Settings"
-#         db_table = 'website_settings'
-#
-#     def __str__(self):
-#         return self.site_name
-#
-#
-# class SocialLink(models.Model):
-#     site_setting = models.ForeignKey('config.Setting', on_delete=models.CASCADE, verbose_name="تنظیمات")
-#     title = models.CharField(max_length=35, verbose_name="عنوان")
-#     url = models.URLField(max_length=90, verbose_name="آدرس")
-#
-#     def __str__(self):
-#         return f'{self.site_setting} - {self.title}'
-#
-#     class Meta:
-#         verbose_name = "Social Link"
-#         verbose_name_plural = "Social Links"
-#         db_table = 'website_social_links'
+from django.db import models
+
+
+class Settings(models.Model):
+    name = models.CharField(max_length=35)
+    logo_1 = models.ImageField(upload_to='setting_logo/logo_1', null=True, blank=True)
+    logo_2 = models.ImageField(upload_to='setting_logo/logo_2', null=True, blank=True)
+    transparent_logo = models.ImageField(upload_to='site_setting/transparent_logo', null=True, blank=True)
+    footer_text = models.TextField(null=True, blank=True)
+    contact_email = models.EmailField(null=True, blank=True)
+    phone_number = models.CharField(max_length=11, null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+    is_main = models.BooleanField(default=False, unique=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Website Setting'
+        verbose_name_plural = "Website Settings"
+        db_table = 'website_settings'
+
+    def __str__(self):
+        return self.name

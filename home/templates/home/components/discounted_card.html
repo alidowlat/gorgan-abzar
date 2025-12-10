@@ -1,0 +1,17 @@
+{% load extra_filters %}
+<div class="swiper-slide small-card group">
+    <a class="mt-4" href="{{ product.get_absolute_url }}">
+        <img class="small-card_img border-2 dark:border-gray-700 rounded-md" src="{{ product.image.url }}" alt="{{ product.title }}">
+    </a>
+    <div class="space-y-2">
+        <a href="{{ product.get_absolute_url }}" class="small-card_link">{{ product.title }}</a>
+        <div class="product-card_price-wrapper">
+            <div class="small-card_price justify-between">
+                <span class="pt-1">{{ product.discount_rate }}%</span>
+                <h4 class="flex items-center gap-x-1 text-lg">{{ product.final_price|three_digits }}
+                    <p class="text-xs font-DanaMedium">تومان</p>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>

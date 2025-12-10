@@ -25,6 +25,18 @@ def apply_filters(request, queryset):
 
     return queryset
 
+
+def mark_favorites(request, products):
+    if request.user.is_authenticated:
+        favorite_ids = set(
+            Favorite.objects.filter(user=request.user).values_list('product_id', flat=True)
+        )
+    else:
+        favorite_ids = set()
+
+    for product in products:
+        product.is_favorited = product.id in favorite_ids
+
 #
 # @login_required
 # def favorite_count(request):

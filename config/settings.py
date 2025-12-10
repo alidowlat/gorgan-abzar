@@ -13,7 +13,6 @@ ALLOWED_HOSTS = config(
 
 INTERNAL_IPS = ['127.0.0.1', '0.0.0.0', 'localhost']
 
-
 INSTALLED_APPS = [
     # def
     'django.contrib.admin',
@@ -28,6 +27,7 @@ INSTALLED_APPS = [
     'home',
     'core',
     'product',
+    'contact',
     'reviews',
 
     # libs and packages
@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'core.context_processors.site_defaults',
+                'core.context_processors.site_settings',
             ],
         },
     },

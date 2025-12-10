@@ -5,9 +5,10 @@ from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.views.generic import DetailView
 
+from core.actions import mark_favorites
 from product.helper import ProductDataFetcher
-from product.models import Product
-from reviews.models import ProductReview, ProductReviewReaction
+from product.models import Product, Favorite
+from reviews.models import ProductReview
 
 
 class ProductDetailView(DetailView):
@@ -38,8 +39,10 @@ class ProductDetailView(DetailView):
             'last_review': last_review,
             'liked_ids': liked_ids,
             'disliked_ids': disliked_ids,
-            'latest_products': related_products,
+            'related_products': related_products,
         })
+
+        mark_favorites(self.request, context['related_products'])
 
         return context
 

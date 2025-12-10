@@ -330,38 +330,11 @@
                     <!-- IMAGE SLIDER -->
                     <div class="w-2/4 hidden md:flex flex-col justify-center items-center gap-y-4">
                         <span class="open-sliderModal">
-                            <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="cursor-pointer object-cover"
+                            <img src="{% if product.image %}{{ product.image.url }}{% endif %}"
+                                 class="cursor-pointer object-cover border-2 dark:border-gray-700 rounded-md"
                                  alt="">
                         </span>
-                        {% with galleries=product.galleries.all %}
-                            {% if galleries %}
-                                <div class="grid grid-cols-12 child:col-span-3 child:app-border gap-x-4 child:size-16 child:rounded-lg child:cursor-pointer">
-                                    {% if galleries|length <= 4 %}
-                                        {% for g in galleries %}
-                                            <div class="p-1 open-sliderModal">
-                                                <img src="{{ g.image.url }}" class="object-cover rounded-lg">
-                                            </div>
-                                        {% endfor %}
-                                    {% else %}
-                                        {% for g in galleries|slice:":3" %}
-                                            <div class="p-1 open-sliderModal">
-                                                <img src="{{ g.image.url }}" class="object-cover rounded-lg">
-                                            </div>
-                                        {% endfor %}
-                                        {% with last_image=galleries.last %}
-                                            <div class="overflow-hidden relative open-sliderModal">
-                                                <svg class="absolute size-8 text-gray-100 top-4 left-4 z-10">
-                                                    <use href="#ellipsis"></use>
-                                                </svg>
-                                                <img src="{{ last_image.image.url }}" class="object-cover rounded-lg blur-sm">
-                                            </div>
-                                        {% endwith %}
-                                    {% endif %}
-
-                                </div>
-                            {% endif %}
-                        {% endwith %}
-
+                        {% include 'product/detail/components/gallery.html' %}
                     </div>
                     <div class="slider-modal">
                         <div class="flex w-full h-fit items-center justify-between">
@@ -556,66 +529,6 @@
             </div>
         </section>
 
-        <!-- Best-selling products -->
-        <section class="mx-4 mt-10 lg:mt-20">
-            <!-- SECTION TITLE -->
-            <div class="flex flex-col gap-y-4 xs:flex-row items-center justify-between w-full text-center xs:text-start">
-                <div class="flex items-center gap-x-2 sm:gap-x-4">
-                    <span class="size-12 hidden xs:flex rounded-lg bg-white shadow-lg dark:bg-gray-800 flex-center">
-                        <svg class="size-7 text-gray-700 dark:text-gray-100">
-                            <use href="#mobile"></use>
-                        </svg>
-                    </span>
-                    <div class="space-y-1 md:space-y-1">
-                        <h3 class="text-xl md:text-2xl font-MorabbaMedium text-gray-800 dark:text-gray-50">محصولات
-                            <span class="text-blue-600 dark:text-blue-500">مرتبط</span>
-                        </h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-300">جدیدترین و بروزترین محصولات</p>
-                    </div>
-                </div>
-                <div class="w-full xs:w-auto flex justify-between xs:justify-end  items-center gap-x-2">
-                    <div class="flex items-center gap-x-2">
-                        <button class="slider-navigate_btn BestSelling-prev-slide swiper-button-disabled invisable-btn swiper-button-lock"
-                                tabindex="-1" aria-label="Previous slide" aria-controls="swiper-wrapper-103c4be17a10f968f6"
-                                aria-disabled="true" disabled="">
-                            <svg class="size-6 -rotate-90">
-                                <use href="#chevron"></use>
-                            </svg>
-                        </button>
-                        <button class="slider-navigate_btn BestSelling-next-slide swiper-button-lock swiper-button-disabled"
-                                tabindex="-1"
-                                aria-label="Next slide" aria-controls="swiper-wrapper-103c4be17a10f968f6" aria-disabled="true"
-                                disabled="">
-                            <svg class="size-6 rotate-90">
-                                <use href="#chevron"></use>
-                            </svg>
-                        </button>
-                    </div>
-                    <a href="#"
-                       class="group shadow-xl text-sm md:text-base flex gap-x-1.5 items-center px-2 h-10 md:px-3 text-white bg-blue-600 rounded-xl">
-                        <p>مشاهده همه</p>
-                        <span class="w-7 h-7 rounded-full bg-blue-500 flex-center md:group-hover:-translate-x-1 transition-transform duration-300">
-                            <svg class="size-5">
-                                <use href="#arrow"></use>
-                            </svg>
-                        </span>
-                    </a>
-                </div>
-            </div>
-            <!-- Latest products Slider -->
-            {% if latest_products %}
-                <div class="swiper BestSelling mt-5 w-full swiper-initialized swiper-horizontal swiper-rtl swiper-backface-hidden">
-                    <div class="swiper-wrapper py-5" id="swiper-wrapper-103c4be17a10f968f6" aria-live="polite"
-                         style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px); transition-delay: 0ms;">
-                        <!-- PRODUCT ITEM -->
-                        {% for product in latest_products %}
-                            {% include 'product/detail/components/card.html' %}
-                        {% endfor %}
-                    </div>
-                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
-            {% endif %}
-        </section>
-
         <section class="relative mt-10 flex flex-col items-start gap-4 rounded-lg bg-white dark:bg-gray-800 shadow p-4">
             <div class="w-full py-3 flex items-center gap-x-6 child:font-DanaMedium tab-buttons z-10 border-b  border-gray-600/20 dark:border-b-gray-200/20">
                 <button class="tab-btn text-blue-500 dark:text-blue-500" data-target="tab1">معرفی محصول</button>
@@ -665,6 +578,66 @@
 
                 {% include 'product/detail/components/reviews.html' %}
             </div>
+        </section>
+
+        <!-- Related Products -->
+        <section class="mx-4 mt-10 lg:mt-20">
+            <!-- SECTION TITLE -->
+            <div class="flex flex-col gap-y-4 xs:flex-row items-center justify-between w-full text-center xs:text-start">
+                <div class="flex items-center gap-x-2 sm:gap-x-4">
+                    <span class="size-12 hidden xs:flex rounded-lg bg-white shadow-lg dark:bg-gray-800 flex-center">
+                        <svg class="size-7 text-gray-700 dark:text-gray-100">
+                            <use href="#mobile"></use>
+                        </svg>
+                    </span>
+                    <div class="space-y-1 md:space-y-1">
+                        <h3 class="text-xl md:text-2xl font-MorabbaMedium text-gray-800 dark:text-gray-50">محصولات
+                            <span class="text-blue-600 dark:text-blue-500">مرتبط</span>
+                        </h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-300">جدیدترین و بروزترین محصولات</p>
+                    </div>
+                </div>
+                <div class="w-full xs:w-auto flex justify-between xs:justify-end  items-center gap-x-2">
+                    <div class="flex items-center gap-x-2">
+                        <button class="slider-navigate_btn BestSelling-prev-slide swiper-button-disabled invisable-btn swiper-button-lock"
+                                tabindex="-1" aria-label="Previous slide" aria-controls="swiper-wrapper-103c4be17a10f968f6"
+                                aria-disabled="true" disabled="">
+                            <svg class="size-6 -rotate-90">
+                                <use href="#chevron"></use>
+                            </svg>
+                        </button>
+                        <button class="slider-navigate_btn BestSelling-next-slide swiper-button-lock swiper-button-disabled"
+                                tabindex="-1"
+                                aria-label="Next slide" aria-controls="swiper-wrapper-103c4be17a10f968f6" aria-disabled="true"
+                                disabled="">
+                            <svg class="size-6 rotate-90">
+                                <use href="#chevron"></use>
+                            </svg>
+                        </button>
+                    </div>
+                    <a href="#"
+                       class="group shadow-xl text-sm md:text-base flex gap-x-1.5 items-center px-2 h-10 md:px-3 text-white bg-blue-600 rounded-xl">
+                        <p>مشاهده همه</p>
+                        <span class="w-7 h-7 rounded-full bg-blue-500 flex-center md:group-hover:-translate-x-1 transition-transform duration-300">
+                            <svg class="size-5">
+                                <use href="#arrow"></use>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <!-- Latest products Slider -->
+            {% if related_products %}
+                <div class="swiper BestSelling mt-5 w-full swiper-initialized swiper-horizontal swiper-rtl swiper-backface-hidden">
+                    <div class="swiper-wrapper py-5" id="swiper-wrapper-103c4be17a10f968f6" aria-live="polite"
+                         style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px); transition-delay: 0ms;">
+                        <!-- PRODUCT ITEM -->
+                        {% for product in related_products %}
+                            {% include 'product/detail/components/card.html' %}
+                        {% endfor %}
+                    </div>
+                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+            {% endif %}
         </section>
     </main>
 {% endblock %}

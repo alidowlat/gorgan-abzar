@@ -1,0 +1,27 @@
+{% with galleries=product.galleries.all %}
+    {% if galleries %}
+        <div class="grid grid-cols-12 child:col-span-3 child:app-border gap-x-4 child:size-16 child:rounded-lg child:cursor-pointer">
+            {% if galleries|length <= 4 %}
+                {% for g in galleries %}
+                    <div class="p-1 open-sliderModal">
+                        <img src="{{ g.image.url }}" class="object-cover rounded-lg">
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% for g in galleries|slice:":3" %}
+                    <div class="p-1 open-sliderModal">
+                        <img src="{{ g.image.url }}" class="object-cover rounded-lg">
+                    </div>
+                {% endfor %}
+                {% with last_image=galleries.last %}
+                    <div class="overflow-hidden relative open-sliderModal">
+                        <svg class="absolute size-8 text-gray-100 top-4 left-4 z-10">
+                            <use href="#ellipsis"></use>
+                        </svg>
+                        <img src="{{ last_image.image.url }}" class="object-cover rounded-lg blur-sm">
+                    </div>
+                {% endwith %}
+            {% endif %}
+        </div>
+    {% endif %}
+{% endwith %}
