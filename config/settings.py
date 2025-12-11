@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # project apps
+    'order',
     'accounts',
     'home',
     'core',

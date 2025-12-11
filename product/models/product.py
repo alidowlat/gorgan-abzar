@@ -1,10 +1,8 @@
 import io
-
 from PIL import Image
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.urls import reverse
-
 from core.media_path import get_image_upload_to, OverwriteStorage
 
 MAX_SIZE = 150 * 1024
