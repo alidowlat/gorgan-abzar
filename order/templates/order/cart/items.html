@@ -1,0 +1,77 @@
+{% load extra_filters %}
+{% for item in items %}
+    <div class="w-full flex flex-col gap-y-4 child:p-2 lg:child:p-4 ">
+        <!-- PRODUCT ITEM -->
+        <div class="w-full flex justify-between relative {% if not forloop.last %}border-b-2 border-gray-200 dark:border-white/20{% endif %}">
+            <div class="flex flex-col sm:flex-row items-center gap-6">
+                <!-- IMG AND COUNT BTN -->
+                <div class="flex w-fit flex-col">
+                    <img src="{{ item.image }}" class="w-36" alt="{{ item.title }}">
+                    <div class="cart-item flex items-center gap-x-2 mt-8 border border-gray-200 rounded-lg dark:border-white/20">
+                        <button class="custom-input plus p-1">
+                            <svg class="w-6 h-6 text-green-600">
+                                <use href="#plus"></use>
+                            </svg>
+                        </button>
+
+                        <input type="number"
+                               name="countInput"
+                               value="{{ item.count }}"
+                               data-item="{{ item.id }}"
+                               max="{{ item.stock }}"
+                               class="custom-input w-16 text-center text-lg bg-transparent"
+                               readonly>
+
+                        <button class="custom-input minus p-1">
+                            <svg class="w-6 h-6 text-red-600">
+                                <use href="#minus"></use>
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+                <!-- information and name product -->
+                <div class="flex flex-col gap-y-4">
+                    <div class="flex gap-x-2">
+                        <h2 class="font-DanaDemiBold line-clamp-1">{{ item.title }}</h2>
+
+                        {#                        {% if item.product.discount_rate %}#}
+                        {#                            (#}
+                        {#                            <del class="opacity-75">{{ item.raw_unit_price|three_digits }}</del>)#}
+                        {#                            <p>{{ item.unit_price|three_digits }} تومان</p>#}
+                        {#                        {% else %}#}
+                        {#                            <p>{{ item.unit_price|three_digits }} تومان</p>#}
+                        {#                        {% endif %}#}
+                    </div>
+                    <ul class="space-y-3 child:text-sm text-gray-400 child:flex child:items-center child:gap-x-1.5">
+                        <li>
+                            <svg class="w-5 h-5">
+                                <use href="#shield"></use>
+                            </svg>
+                            <p class="mt-1">تضمین سلامت کالا</p>
+                        </li>
+                        <li>
+                            <svg class="w-5 h-5">
+                                <use href="#truck"></use>
+                            </svg>
+                            <p class="mt-1">ارسال ۲ الی ۴ روز کاری</p>
+                        </li>
+                    </ul>
+                    <span class="flex items-center gap-x-1 text-gray-700 dark:text-gray-300 font-DanaMedium mt-4">
+                        <del id="item-{{ item.id }}-raw" class="opacity-75"
+                             style="{% if not item.product.discount_rate %}display:none{% endif %}">
+                        {{ item.raw_total_price|three_digits }}
+                        </del>
+                        <p id="item-{{ item.id }}-total"
+                           class="item-total font-DanaMedium text-xl">{{ item.total_price|three_digits }}</p>
+                    </span>
+                </div>
+            </div>
+            <div class="items-end justify-between flex-col">
+                <svg class="remove-item w-5 h-5 cursor-pointer" data-id="{{ item.id }}">
+                    <use href="#x-mark"></use>
+                </svg>
+            </div>
+        </div>
+    </div>
+{% endfor %}

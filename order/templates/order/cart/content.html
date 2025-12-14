@@ -1,0 +1,39 @@
+<section
+        class="flex flex-col lg:flex-row justify-between items-start gap-4 child:rounded-lg child:bg-white child:dark:bg-gray-800 child:shadow child:p-4 mt-5">
+    {% if items %}
+        <!-- products -->
+        <div class="w-full lg:w-3/4 flex flex-col gap-y-8 ">
+            <!-- shopping cart header -->
+            <div class="flex items-center justify-between">
+                <span class="flex items-center gap-x-2">
+                    <h2 class="font-DanaMedium text-xl">سبد خرید</h2>
+                    <p class="text-gray-400" id="cartItemCount">({{ order.items.count }} کالا)</p>
+                </span>
+                <span class="clear-cart flex items-center gap-x-1 text-red-600 dark:text-white cursor-pointer">
+                    <p class="mt-1 font-DanaMedium ">حذف همه</p>
+                    <svg class="w-5 h-5">
+                        <use href="#trash"></use>
+                    </svg>
+                </span>
+            </div>
+            <!-- PRODUCT ITEMS -->
+            {% include 'order/cart/items.html' %}
+        </div>
+
+        <!-- PRICE BOX -->
+        <div class="w-full lg:w-1/4 lg:sticky top-5 flex flex-col gap-y-4">
+            <!-- PRICE -->
+            {% include 'order/includes/price_box.html' %}
+
+            <a href="#"
+               class="w-full mt-4 flex items-center gap-x-1 justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all rounded-lg shadow py-2">
+                تایید و تکمیل سفارش
+                <svg class="w-5 h-5">
+                    <use href="#shopping-bag"></use>
+                </svg>
+            </a>
+        </div>
+    {% else %}
+        <p>nothimg</p>
+    {% endif %}
+</section>

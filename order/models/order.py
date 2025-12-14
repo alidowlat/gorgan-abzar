@@ -1,7 +1,5 @@
 from django.db import models
 
-from order.utils.calculator import OrderCalculator
-
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -53,9 +51,11 @@ class Order(models.Model):
     )
 
     def set_final_price(self):
+        from order.utils import OrderCalculator
         self.final_price = OrderCalculator(self).total_with_shipping()
 
     def set_tracking_code(self):
+        from order.utils import OrderCalculator
         self.tracking_code = OrderCalculator(self).generate_tracking_code()
 
     def __str__(self):
@@ -80,30 +80,38 @@ class OrderItems(models.Model):
     )
     count = models.PositiveSmallIntegerField()
     unit_price = models.PositiveIntegerField()
-    final_price = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
+    def final_price(self):
+        return self.unit_price * self.count
+
+    @property
     def total(self):
+        from order.utils import OrderCalculator
         return OrderCalculator(self).total_after_discount()
 
     @property
     def total_with_shipping(self):
+        from order.utils import OrderCalculator
         return OrderCalculator(self).total_with_shipping()
 
     @property
     def discount_total(self):
+        from order.utils import OrderCalculator
         return OrderCalculator(self).full_discount()
 
     @property
     def regular_total(self):
+        from order.utils import OrderCalculator
         return OrderCalculator(self).regular_total()
 
     def generate_tracking_code(self):
+        from order.utils import OrderCalculator
         return OrderCalculator(self).generate_tracking_code()
 
     def __str__(self):
-        return f'OrderItem #{self.order_id} - {self.product} - {self.final_price}'
+        return f'OrderItem #{self.order_id} - {self.product}'
 
     class Meta:
         verbose_name = 'Order Item'
