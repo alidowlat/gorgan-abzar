@@ -66,9 +66,9 @@ class CartManager:
             raw_total = p.price * item.count
             final_total = item.unit_price * item.count
 
-            total_before += raw_total
-            total_after += final_total
-            total_items += item.count
+            # total_before += raw_total
+            # total_after += final_total
+            # total_items += item.count
 
             profit = raw_total - final_total
             total_profit += profit
