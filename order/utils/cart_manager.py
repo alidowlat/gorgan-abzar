@@ -59,16 +59,16 @@ class CartManager:
 
         for item in self.items:
             p = item.product
+            raw_total = p.price * item.count
+            final_total = item.unit_price * item.count
+
             total_before += p.price * item.count
             total_after += item.unit_price * item.count
             total_items += item.count
 
-            raw_total = p.price * item.count
-            final_total = item.unit_price * item.count
-
-            total_before += raw_total
-            total_after += final_total
-            total_items += item.count
+            # total_before += raw_total
+            # total_after += final_total
+            # total_items += item.count
 
             profit = raw_total - final_total
             total_profit += profit
