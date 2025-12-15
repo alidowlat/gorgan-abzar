@@ -1,9 +1,17 @@
 from django.db import models
 
+ORDER_STATUS_STYLES = {
+    'cart': {'color': 'text-yellow-500'},
+    'pending': {'color': 'text-blue-500'},
+    'shipped': {'color': 'text-green-600'},
+    'delivered': {'color': 'text-blue-500'},
+}
+
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('pending', 'پزدازش و بسته بندی'),
+        ('cart', 'در انتظار پرداخت'),
+        ('pending', 'پردازش و بسته بندی'),
         ('shipped', 'ارسال شده'),
         ('delivered', 'تحویل داده شده'),
     ]
@@ -23,7 +31,7 @@ class Order(models.Model):
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
-        default='pending',
+        default='cart',
     )
     discount_code = models.ForeignKey(
         'order.DiscountCode',
@@ -49,6 +57,13 @@ class Order(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
+
+    def get_status_style(self):
+        return ORDER_STATUS_STYLES.get(self.status, {})
+
+    def get_total_price(self):
+        from order.utils import OrderCalculator
+        return OrderCalculator(self).items_total()
 
     def set_final_price(self):
         from order.utils import OrderCalculator

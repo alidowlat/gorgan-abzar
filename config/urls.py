@@ -9,6 +9,7 @@ urlpatterns = [
     path('ga-moazzen-manager/', admin.site.urls),
     path('', include('home.urls')),
     path('auth/', include('accounts.urls')),
+    path('dashboard/', include('dashboard.urls')),
     path('orders/', include('order.urls')),
     path('products/', include('product.urls')),
     path('contact-us/', include('contact.urls')),

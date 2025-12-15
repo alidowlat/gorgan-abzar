@@ -1,0 +1,62 @@
+{% extends 'dashboard/shared/base.html' %}
+{% load extra_filters %}
+
+{% block title %}
+    سفارشات من
+{% endblock %}
+
+{% block content %}
+    {% if orders %}
+        <div class="flex flex-col shadow rounded-lg p-4 dark:bg-gray-800 bg-white mt-5">
+        <span class="flex items-center gap-x-2">
+            <img src="/static/images/svg/status-delivered.svg" class="w-10" alt="">
+            <h2 class="font-DanaMedium text-lg">سفارش های اخیر :</h2>
+        </span>
+            <div class="relative mt-5 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+                <table class="w-full text-sm text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700  bg-gray-100 dark:bg-gray-900 dark:text-gray-200">
+                    <tr>
+                        <th scope="col" class="px-6 py-3.5">
+                            کد پیگیری
+                        </th>
+                        <th scope="col" class="px-6 py-3.5">
+                            تاریخ
+                        </th>
+                        <th scope="col" class="px-6 py-3.5">
+                            قیمت
+                        </th>
+                        <th scope="col" class="px-6 py-3.5">
+                            وضعیت
+                        </th>
+                        <th scope="col" class="px-6 py-3.5">
+                            جزئیات
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr class="bg-white border-b cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+                            <th scope="row"
+                                class="px-6 py-5 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center gap-x-2">
+                                {{ order.tracking_code|default:'-' }}
+                            </th>
+                            <td class="px-6 py-5">
+                                {{ order.updated_at|show_date_default }}
+                            </td>
+                            <td class="font-DanaDemiBold px-6 py-5">
+                                {{ order.get_total_price|three_digits }} تومان
+                            </td>
+                            <td class="px-6 py-5 {{ order.get_status_style.color }} font-DanaDemiBold">
+                                {{ order.get_status_display }}
+                            </td>
+                            <td class="px-6 py-5 transition-all hover:text-blue-500 font-DanaDemiBold">
+                                <a href="#">مشاهده</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

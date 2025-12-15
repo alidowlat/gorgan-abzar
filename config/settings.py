@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     # project apps
     'order',
     'accounts',
+    'dashboard',
     'home',
     'core',
     'product',
