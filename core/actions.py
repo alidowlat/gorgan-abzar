@@ -3,6 +3,8 @@ from django.db.models import Prefetch, Count
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
+
+from accounts.models import UserAddress
 # from search.models import SearchQuery
 from product.models import Favorite, ProductVisit
 
@@ -54,7 +56,16 @@ def delete_all_favorites(request):
     Favorite.objects.filter(user=request.user).delete()
     return JsonResponse({'status': 'ok'})
 
-#
+
+@require_POST
+@login_required
+def delete_address(request):
+    address_id = request.POST.get('address_id')
+    if address_id:
+        UserAddress.objects.filter(user=request.user, id=address_id).delete()
+        return JsonResponse({'status': 'ok'})
+    return JsonResponse({'status': 'error', 'message': 'address_id not provided'}, status=400)
+
 # @require_POST
 # @login_required
 # def delete_all_searches(request):

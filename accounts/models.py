@@ -113,7 +113,7 @@ class UserAddress(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
+        ordering = ["-created_at"]
         verbose_name = 'Address'
-        verbose_name_plural = 'Addresses'
+        verbose_name_plural = 'Address List'
         db_table = 'addresses'
-        ordering = ["-is_default", "-created_at"]
