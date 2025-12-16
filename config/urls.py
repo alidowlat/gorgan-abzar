@@ -8,6 +8,7 @@ from config import settings
 urlpatterns = [
     path('ga-moazzen-manager/', admin.site.urls),
     path('', include('home.urls')),
+    path('', include('core.urls')),
     path('auth/', include('accounts.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('orders/', include('order.urls')),

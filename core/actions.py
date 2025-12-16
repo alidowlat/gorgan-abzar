@@ -37,29 +37,23 @@ def mark_favorites(request, products):
     for product in products:
         product.is_favorited = product.id in favorite_ids
 
-#
-# @login_required
-# def favorite_count(request):
-#     count = Favorite.objects.filter(user=request.user).count()
-#     return JsonResponse({'count': count})
-#
-#
-# @require_POST
-# @login_required
-# def delete_favorite(request):
-#     product_id = request.POST.get('product_id')
-#     if product_id:
-#         Favorite.objects.filter(user=request.user, product_id=product_id).delete()
-#         return JsonResponse({'status': 'ok'})
-#     return JsonResponse({'status': 'error', 'message': 'product_id not provided'}, status=400)
-#
-#
-# @require_POST
-# @login_required
-# def delete_all_favorites(request):
-#     Favorite.objects.filter(user=request.user).delete()
-#     return JsonResponse({'status': 'ok'})
-#
+
+@require_POST
+@login_required
+def delete_favorite(request):
+    product_id = request.POST.get('product_id')
+    if product_id:
+        Favorite.objects.filter(user=request.user, product_id=product_id).delete()
+        return JsonResponse({'status': 'ok'})
+    return JsonResponse({'status': 'error', 'message': 'product_id not provided'}, status=400)
+
+
+@require_POST
+@login_required
+def delete_all_favorites(request):
+    Favorite.objects.filter(user=request.user).delete()
+    return JsonResponse({'status': 'ok'})
+
 #
 # @require_POST
 # @login_required

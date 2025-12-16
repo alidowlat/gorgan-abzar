@@ -31,7 +31,7 @@ class AbstractReviewReaction(models.Model):
 
 
 class AbstractFavorite(models.Model):
-    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
