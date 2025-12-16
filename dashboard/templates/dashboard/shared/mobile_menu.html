@@ -21,23 +21,23 @@
                             </span>
             </div>
             <span>
-                            <svg class="w-6 h-6 cursor-pointer text-blue-500">
-                                <use href="#edit"></use>
-                            </svg>
-                        </span>
+                <svg class="w-6 h-6 cursor-pointer text-blue-500">
+                    <use href="#edit"></use>
+                </svg>
+            </span>
         </div>
         <ul class="w-full relative space-y-2 child:duration-300 child:transition-all child:py-3  child:px-2 child:flex child:gap-x-2 text-lg child:cursor-pointer child:rounded-lg">
             <li class="bg-blue-500/10 text-blue-500">
                 <svg class="w-6 h-6 ">
                     <use href="#squares"></use>
                 </svg>
-                <a href="dashboard.html">داشبورد</a>
+                <a href="{% url 'dashboard_view' %}">داشبورد</a>
             </li>
-            <li class="hover:text-blue-500">
+            <li class=" hover:text-blue-500">
                 <svg class="w-6 h-6 ">
                     <use href="#shopping-bag"></use>
                 </svg>
-                <a href="dashboard-orders.html">
+                <a href="{% url 'orders_view' %}">
                     سفارش ها
                 </a>
             </li>
@@ -69,7 +69,7 @@
                 <svg class="w-6 h-6 ">
                     <use href="#arrow-left-end"></use>
                 </svg>
-                <a href="index.html">خروج</a>
+                <a href="{% url 'logout' %}">خروج</a>
             </li>
         </ul>
     </div>

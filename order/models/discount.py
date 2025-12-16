@@ -1,4 +1,4 @@
-from datetime import timezone
+from django.utils import timezone
 from django.core.validators import MinValueValidator
 from django.db import models
 
@@ -12,6 +12,11 @@ class DiscountCode(models.Model):
 
     def is_expired(self):
         return self.expiration_date < timezone.now()
+
+    def apply_discount(self, total_price):
+        if self.is_expired():
+            return 0
+        return min(self.discount_amount, total_price)
 
     def is_valid_for_user(self, user):
         if self.is_expired():

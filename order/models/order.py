@@ -65,6 +65,22 @@ class Order(models.Model):
         from order.utils import OrderCalculator
         return OrderCalculator(self).items_total()
 
+    def get_final_price(self):
+        from order.utils import OrderCalculator
+        return OrderCalculator(self).total_with_shipping()
+
+    def get_discount_profit(self):
+        from order.utils import OrderCalculator
+        return OrderCalculator(self).discount_amount()
+
+    def get_product_profit(self):
+        from order.utils import OrderCalculator
+        return OrderCalculator(self).product_discount_amount()
+
+    def get_final_profit(self):
+        from order.utils import OrderCalculator
+        return OrderCalculator(self).full_discount()
+
     def set_final_price(self):
         from order.utils import OrderCalculator
         self.final_price = OrderCalculator(self).total_with_shipping()

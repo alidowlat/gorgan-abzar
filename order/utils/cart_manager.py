@@ -94,9 +94,6 @@ class CartManager:
             discount_amount = self.order.discount_code.apply_discount(total_after)
             final_price -= discount_amount
 
-        if self.order.discount_code:
-            final_price = self.order.apply_discount(final_price)
-
         return {
             "items": output_items,
             "total_items": total_items,

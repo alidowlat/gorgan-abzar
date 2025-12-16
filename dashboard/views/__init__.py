@@ -1,2 +1,2 @@
 from .overview import DashboardView
-from .orders import OrderListView
+from .orders import OrderListView, OrderItemListView
