@@ -49,7 +49,7 @@ class AddressUpdateView(LoginRequiredMixin, UpdateView):
     model = UserAddress
     context_object_name = 'address'
     form_class = AddressForm
-    template_name = 'dashboard/address/edit/form.html'
+    template_name = 'dashboard/address/update/form.html'
 
     def get_object(self, queryset=None):
         return get_object_or_404(

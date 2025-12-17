@@ -1,0 +1,156 @@
+{% extends 'dashboard/shared/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+    ویرایش اطلاعات حساب
+{% endblock %}
+
+{% block content %}
+    <div class="flex flex-col shadow rounded-lg p-4 dark:bg-gray-800 bg-white mt-5 lg:mt-0">
+        <div class="flex items-center justify-between">
+            <h2 class="font-DanaMedium text-lg">اطلاعات حساب کاربری</h2>
+        </div>
+
+        <form id="profile-update-form"
+              action="{% url 'profile_edit_view' %}"
+              method="post"
+              class="mt-5 grid grid-cols-12 gap-5 child:col-span-12 child:lg:col-span-6">
+            {% csrf_token %}
+
+            <div>
+                <label class="block text-sm font-DanaMedium text-gray-500 dark:text-gray-300">
+                    نام
+                </label>
+                <div class="mt-3 relative">
+                    {{ form.first_name|add_class:"block w-full p-2.5 text-base outline dark:outline-none outline-1 -outline-offset-1 placeholder:text-gray-400 transition-all text-gray-800 dark:text-gray-100 dark:bg-gray-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded-md focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-blue-400" }}
+                    <div type="button" class="absolute left-3 top-3 z-10">
+                        <svg class="size-5 text-gray-500">
+                            <use href="#edit"></use>
+                        </svg>
+                    </div>
+                </div>
+                <p class="mt-1 text-sm text-red-500 hidden" data-error-for="first_name"></p>
+            </div>
+            <div>
+                <label class="block text-sm font-DanaMedium text-gray-500 dark:text-gray-300">
+                    نام خانوادگی
+                </label>
+                <div class="mt-3 relative">
+                    {{ form.last_name|add_class:"block w-full p-2.5 text-base outline dark:outline-none outline-1 -outline-offset-1 placeholder:text-gray-400 transition-all text-gray-800 dark:text-gray-100 dark:bg-gray-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded-md focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-blue-400" }}
+                    <div type="button" class="absolute left-3 top-3 z-10">
+                        <svg class="size-5 text-gray-500">
+                            <use href="#edit"></use>
+                        </svg>
+                    </div>
+                </div>
+                <p class="mt-1 text-sm text-red-500 hidden" data-error-for="last_name"></p>
+            </div>
+            <div>
+                <label class="block text-sm font-DanaMedium text-gray-500 dark:text-gray-300">
+                    ایمیل
+                </label>
+                <div class="mt-3 relative">
+                    {{ form.email|add_class:"block w-full text-center p-2.5 text-base outline dark:outline-none outline-1 -outline-offset-1 placeholder:text-gray-400 transition-all text-gray-800 dark:text-gray-100 dark:bg-gray-900 bg-slate-100 border border-transparent hover:border-slate-200 appearance-none rounded-md focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-blue-400" }}
+                    {% if request.user.email %}
+                        <div type="button" class="absolute left-3 top-3 z-10">
+                            <svg class="size-5 text-gray-500">
+                                <use href="#edit"></use>
+                            </svg>
+                        </div>
+                    {% else %}
+                        <div type="button" class="absolute left-3 top-3 z-10">
+                            <svg class="size-5 text-gray-500">
+                                <use href="#plus"></use>
+                            </svg>
+                        </div>
+                    {% endif %}
+                </div>
+                <p class="mt-1 text-sm text-red-500 hidden" data-error-for="email"></p>
+            </div>
+        </form>
+        <div class="flex justify-end mt-4">
+            <button id="profile-submit-btn"
+                    class="px-6 py-2 mt-4 bg-blue-500 text-white rounded-lg">
+                ثبت تغییرات
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const form = document.getElementById('profile-update-form');
+        const submitBtn = document.getElementById('profile-submit-btn');
+        const emailInput = form.querySelector('input[name="email"]');
+
+        const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+
+        function normalizeEmail(value) {
+            persianDigits.forEach((d, i) => {
+                value = value.replaceAll(d, i);
+            });
+            return value.replace(/[آ-ی]/g, '');
+        }
+
+        emailInput.addEventListener('input', function () {
+            const normalized = normalizeEmail(this.value);
+            if (this.value !== normalized) {
+                this.value = normalized;
+            }
+            clearFieldError(this);
+        });
+
+        submitBtn.addEventListener('click', function () {
+            emailInput.value = normalizeEmail(emailInput.value);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    clearAllErrors();
+
+                    if (data.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'موفق',
+                            text: data.message,
+                            timer: 3000,
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.href = '/dashboard/profile';
+                        });
+                    } else {
+                        showErrors(data.errors);
+                    }
+                });
+        });
+
+        function showErrors(errors) {
+            Object.keys(errors).forEach(name => {
+                const input = form.querySelector(`[name="${name}"]`);
+                if (!input) return;
+
+                const error = document.createElement('p');
+                error.className = 'mt-1 text-sm text-red-500';
+                error.innerText = errors[name][0];
+
+                input.closest('div').appendChild(error);
+            });
+        }
+
+        function clearFieldError(input) {
+            const error = input.closest('div').querySelector('p.text-red-500');
+            if (error) error.remove();
+        }
+
+        function clearAllErrors() {
+            form.querySelectorAll('p.text-red-500').forEach(e => e.remove());
+        }
+    </script>
+
+{% endblock %}

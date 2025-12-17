@@ -73,7 +73,7 @@ document.addEventListener('click', function(e){
 
     const addressId = btn.dataset.id;
 
-    fetch(`/dashboard/address/set-default/${addressId}/`, {
+    fetch(`/dashboard/address/set-default/${addressId}`, {
         method: 'POST',
         headers: {
             'X-CSRFToken': getCookie('csrftoken'),
