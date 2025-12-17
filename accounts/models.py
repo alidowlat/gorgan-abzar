@@ -3,7 +3,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from accounts.managers import UserManager
 
-phone_regex = RegexValidator(regex=r'^09\d{9}$', message="لطفا شماره موبایل خود را به درستی وارد کنید.")
+phone_regex = RegexValidator(regex=r'^09\d{9}$', message="شماره تلفن شما باید دقیقاً 11 رقم باشد.")
 otp_regex = RegexValidator(regex=r'^\d{5}$', message='کد تایید باید دقیقا ۵ رقم عددی باشد.')
 postal_code_regex = RegexValidator(r'^[0-9]{10}$', 'کد پستی شما باید دقیقاً 10 رقم باشد.')
 

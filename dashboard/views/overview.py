@@ -20,7 +20,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             ),
             (
                 'user_address',
-                UserAddress.objects.filter(user=self.request.user, is_default=True) if self.request.user.addresses else None
+                UserAddress.objects.filter(user=self.request.user, is_default=True).first() if self.request.user.addresses else None
             ),
         ]
         for field_name, queryset in model_fields:

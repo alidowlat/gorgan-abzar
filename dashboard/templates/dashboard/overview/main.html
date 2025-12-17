@@ -56,36 +56,51 @@
     {% endif %}
     <div class="w-full flex flex-col shadow rounded-lg p-4 dark:bg-gray-800 bg-white mt-5 mb-8">
         <div class="flex items-center justify-between">
-                 <span class="flex items-center gap-x-2">
-                    <img src="/static/images/svg/map.png" class="w-8" alt="">
-                    <h2 class="font-DanaMedium text-lg"> آدرس های من:</h2>
+             <span class="flex items-center gap-x-2">
+                <img src="/static/images/svg/map.png" class="w-8" alt="svg">
+                <h2 class="font-DanaMedium text-lg"> آدرس های من:</h2>
+            </span>
+            <a href="{% url 'address_create_view' %}" class="group shadow-xl text-sm md:text-base flex gap-x-1.5 items-center px-2 h-10 md:px-3 text-white bg-blue-600 rounded-xl">
+                <p>آدرس جدید</p>
+                <span class="w-7 h-7 rounded-full bg-blue-500 flex-center md:group-hover:-translate-x-1 transition-transform duration-300">
+                    <svg class="size-5">
+                        <use href="#plus"></use>
+                    </svg>
                 </span>
-            <a href="#" class="flex items-center gap-x-1 text-blue-500">
-                <svg class="size-5  ">
-                    <use href="#plus"></use>
-                </svg>
-                <h2 class="font-DanaMedium">آدرس جدید</h2>
             </a>
         </div>
         {% if user_address %}
-            <ul class="mt-5 space-y-3">
-                <li class="w-full border border-blue-300 dark:border-blue-400 p-4 rounded-lg">
-                        <span href="#" class="flex items-center gap-x-1 text-blue-500 dark:text-blue-400">
-                            <svg class="size-6">
+            <li class="mt-5 relative w-full border border-blue-300 dark:border-blue-400 p-4 rounded-lg">
+                <div class="flex justify-between">
+                    <span class="flex items-center gap-x-1 text-blue-500 dark:text-blue-400">
+                        <svg class="size-6">
                             <use href="#map"></use>
-                            </svg>
-                            <h2 class="font-DanaMedium">نام آدرس</h2>
-                        </span>
-                    <div class="space-y-1.5 text-gray-600 dark:text-gray-300 mt-3 mr-2">
-                        <p>استان تهران-بلوار آزادی، خیابان استاد معین، کوچه گلستان، پلاک ۱۰ </p>
-                        <p>کد پستی: 000000000</p>
-                        <p>گیرنده: پارسا وصالی | ۰۹000000000</p>
-                    </div>
-                </li>
-            </ul>
+                        </svg>
+                        <h2 class="font-DanaMedium">{{ user_address.state }} - {{ user_address.city }}</h2>
+                    </span>
+                </div>
+                <div class="space-y-1.5 text-gray-600 dark:text-gray-300 mt-5 mr-2">
+                    <p class="font-DanaDemiBold">{{ user_address.full_address }}</p>
+                    <div class="flex gap-x-2">کد پستی: <p class="font-DanaDemiBold">{{ user_address.postal_code }}</p></div>
+                    {% if user_address.plaque %}
+                        <div class="flex gap-x-2">پلاک: <p class="font-DanaDemiBold">{{ user_address.plaque }}</p></div>
+                    {% endif %}
+                    <div class="flex gap-x-2">شماره تلفن گیرنده: <p class="font-DanaDemiBold">{{ user_address.phone_number }}</p></div>
+                    <div class="flex gap-x-2">گیرنده: <p class="font-DanaDemiBold">{{ user_address.full_name }}</p></div>
+                </div>
+                <span class="absolute left-4 bottom-3 flex items-center gap-x-4 child:cursor-pointer">
+                    <a class="flex items-center justify-center w-fit text-sky-500" href="{% url 'address_list_view' %}">
+                        مشاهده همه
+                        <svg class="size-4 mb-0.5">
+                            <use href="#chevron-left"></use>
+                        </svg>
+                    </a>
+                </span>
+            </li>
+
         {% else %}
             <section class="flex flex-col rounded-lg p-4 dark:bg-gray-800 bg-white items-center justify-center gap-y-3">
-                <img class="max-w-60" src="/static/images/svg/empty-cart.svg" alt="">
+                <img class="max-w-60" src="/static/images/svg/empty-cart.svg" alt="svg">
                 <h1 class="font-DanaDemiBold text-gray-700 dark:text-gray-300 text-2xl mt-2">شما آدرس ثبت شده ای ندارید</h1>
             </section>
         {% endif %}
