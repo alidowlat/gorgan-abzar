@@ -43,6 +43,7 @@ class ProductDetailView(DetailView):
         })
 
         mark_favorites(self.request, context['related_products'])
+        mark_favorites(self.request, context['product'])
 
         return context
 
@@ -59,7 +60,7 @@ def add_product_review(request: HttpRequest):
     if not product_id:
         return JsonResponse({'error': 'اطلاعات ناقص است'}, status=400)
 
-    new_review = ProductReview.objects.create(
+    ProductReview.objects.create(
         user=request.user,
         product_id=product_id,
         title=title,
@@ -67,11 +68,14 @@ def add_product_review(request: HttpRequest):
         recommendation=recommendation
     )
 
+    reviews_qs = ProductReview.objects.filter(product_id=product_id)
+    reviews_count = reviews_qs.count()
+
     fetcher = ProductDataFetcher(product_id, request.user)
     liked_ids, disliked_ids = fetcher.get_user_reaction_ids()
 
     reviews = (
-        ProductReview.objects.filter(product_id=product_id)
+        reviews_qs
         .select_related('user')
         .annotate(
             like_count=Count('reactions', filter=Q(reactions__reaction='like')),
@@ -89,7 +93,11 @@ def add_product_review(request: HttpRequest):
         },
         request=request
     )
-    return JsonResponse({'success': True, 'html': html})
+    return JsonResponse({
+        'success': True,
+        'html': html,
+        'reviews_count': reviews_count,
+    })
 
 
 @require_POST

@@ -1,3 +1,5 @@
+from collections.abc import Iterable
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Prefetch, Count
 from django.http import JsonResponse
@@ -36,9 +38,11 @@ def mark_favorites(request, products):
     else:
         favorite_ids = set()
 
+    if not isinstance(products, Iterable):
+        products = [products]
+
     for product in products:
         product.is_favorited = product.id in favorite_ids
-
 
 @require_POST
 @login_required

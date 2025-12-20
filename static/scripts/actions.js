@@ -109,7 +109,6 @@ function sendProductReview(productId) {
     const errorBox = document.getElementById('review-error-box');
     const csrfInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
 
-    // فقط دکمه‌ای که input.checked هست را می‌گیریم
     const recommendationInput = document.querySelector('.recommendation-btn input[name="recommendation"]:checked');
 
     const comment = commentEl ? commentEl.value.trim() : '';
@@ -160,10 +159,18 @@ function sendProductReview(productId) {
                     if (reviewsContainer) reviewsContainer.innerHTML = data.html;
                 }
 
+                if (data.reviews_count !== undefined) {
+                    const countEl = document.getElementById('reviews-count');
+                    if (countEl) {
+                        countEl.textContent = `(${data.reviews_count} دیدگاه)`;
+                    }
+                }
+
                 if (commentEl) commentEl.value = '';
                 if (titleEl) titleEl.value = '';
                 if (recommendationInput) recommendationInput.checked = false;
-                document.querySelectorAll('.recommendation-btn').forEach(b => b.classList.remove('focus:ring-2'));
+                document.querySelectorAll('.recommendation-btn')
+                    .forEach(b => b.classList.remove('focus:ring-2'));
 
                 Swal.fire({
                     icon: 'success',
