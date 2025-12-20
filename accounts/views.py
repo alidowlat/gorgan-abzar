@@ -10,8 +10,6 @@ from core.otp import set_user_otp, send_otp, is_valid_otp, OTPTooSoon
 
 
 def auth_view(request):
-    # delete_inactive_users(exp_in_min=15)
-
     if request.user.is_authenticated:
         return redirect('home_page')
 
@@ -42,8 +40,7 @@ def auth_view(request):
 
 def verify_otp_view(request):
     if request.user.is_authenticated:
-        return redirect('home_page')
-        # return redirect('dashboard_page')
+        return redirect('dashboard_view')
 
     phone_number = request.session.get('user_phone')
     if not phone_number:
@@ -58,16 +55,6 @@ def verify_otp_view(request):
         if form.is_valid():
             otp = form.cleaned_data['otp']
             if is_valid_otp(user, otp):
-                # is_first_verification = not user.is_verified
-                # if is_first_verification:
-                #     notify_user(
-                #         user=user,
-                #         title="تکمیل حساب کاربری",
-                #         message="خوش آمدید! لطفا نسبت به تکمیل حساب کاربری خود اقدام کنید.",
-                #         type_key="complete_profile",
-                #         link=reverse('account_info_page')
-                #     )
-
                 user.is_verified = True
                 user.save(update_fields=['is_verified'])
                 login(request, user)
@@ -76,8 +63,7 @@ def verify_otp_view(request):
                 user.otp_created_at = None
                 user.save(update_fields=['otp', 'otp_created_at'])
 
-                # return redirect('dashboard_page')
-                return redirect('home_page')
+                return redirect('dashboard_view')
             else:
                 form.add_error('otp', 'کد وارد شده اشتباه و یا منقضی شده است.')
     else:

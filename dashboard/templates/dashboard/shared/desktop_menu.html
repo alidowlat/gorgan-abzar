@@ -9,11 +9,13 @@
                 <p class="text-gray-400">{{ request.user.phone_number }}</p>
             </span>
         </div>
-        <span>
-            <svg class="w-6 h-6 cursor-pointer text-blue-500">
-                <use href="#edit"></use>
-            </svg>
-        </span>
+        <a href="{% url 'profile_edit_view' %}">
+            <span>
+                <svg class="w-6 h-6 cursor-pointer text-blue-500">
+                    <use href="#edit"></use>
+                </svg>
+            </span>
+        </a>
     </div>
     <ul class="w-full relative space-y-2 child:duration-300 child:transition-all child:py-3  child:px-2 child:flex child:gap-x-2 text-lg child:cursor-pointer child:rounded-lg">
         <li class="relative {% if request.path == '/dashboard/' %}bg-blue-500/10 text-blue-500{% else %}hover:text-blue-500{% endif %}">
@@ -49,7 +51,7 @@
         </li>
 
         <li class="relative {% if request.path|startswith:'/dashboard/profile' %}bg-blue-500/10 text-blue-500{% else %}hover:text-blue-500{% endif %}">
-            <a href="#" class="absolute inset-0"></a>
+            <a href="{% url 'profile_view' %}" class="absolute inset-0"></a>
             <svg class="w-6 h-6">
                 <use href="#cog"></use>
             </svg>
