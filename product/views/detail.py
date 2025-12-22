@@ -1,13 +1,14 @@
+from core.http_service import get_request_client_info
 from django.db.models import Q, Count
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.views.generic import DetailView
-
 from core.actions import mark_favorites
+from core.clean import create_visit_clean
 from product.helper import ProductDataFetcher
-from product.models import Product, Favorite
+from product.models import Product, ProductVisit
 from reviews.models import ProductReview
 
 
@@ -41,6 +42,15 @@ class ProductDetailView(DetailView):
             'disliked_ids': disliked_ids,
             'related_products': related_products,
         })
+
+        create_visit_clean(
+            user=self.request.user,
+            model=ProductVisit,
+            request=self.request,
+            fk_name='product',
+            http_service=get_request_client_info,
+            loaded_obj=self.object,
+        )
 
         mark_favorites(self.request, context['related_products'])
         mark_favorites(self.request, context['product'])

@@ -1,0 +1,5 @@
+{% for post in posts %}
+    {% include 'blog/list/components/card.html' with post=post %}
+{% empty %}
+    <p>پستی یافت نشد!</p>
+{% endfor %}

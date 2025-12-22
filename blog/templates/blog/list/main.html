@@ -1,0 +1,104 @@
+{% extends 'shared/base.html' %}
+{% load extra_filters %}
+{% load pagination_tags %}
+
+{% block title %}
+    بلاگ
+{% endblock %}
+
+{% block content %}
+    <svg class="hidden">
+        <symbol id="chevron-left" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"></path>
+        </symbol>
+        <symbol id="sort-list" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0-3.75-3.75M17.25 21 21 17.25"></path>
+        </symbol>
+        <symbol id="filter" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"></path>
+        </symbol>
+    </svg>
+
+    <main class="container">
+        <!-- Breadcrumb -->
+        <nav class="flex mt-8" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                <li class="inline-flex items-center">
+                    <a href="{% url 'home_page' %}"
+                       class="inline-flex items-center text-sm gap-x-1  text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="size-4 mb-0.5">
+                            <use href="#home"></use>
+                        </svg>
+                        صفحه اصلی
+                    </a>
+                </li>
+                <li aria-current="page">
+                    <div class="flex items-center">
+                        <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                             fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="m1 9 4-4-4-4"></path>
+                        </svg>
+                        <span class="ms-1 text-sm  text-gray-500 md:ms-2 dark:text-gray-400">بلاگ</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="flex flex-col lg:flex-row gap-4 mt-5">
+            <!-- SIDE FILTER BOX -->
+            {% include 'blog/list/components/filters/desktop.html' %}
+            <!-- TOP FILTER BOX & BLOG & PAGINATION -->
+            <div class="lg:w-3/4">
+                <!-- MOBILE FILTERS -->
+                {% include 'blog/list/components/filters/mobile.html' %}
+                <!-- TOP FILTER BOX -->
+                <div class="hidden lg:flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-x-5">
+                        <div class="flex items-center gap-x-2">
+                            <svg class="size-6 text-gray-400">
+                                <use href="#sort-list"></use>
+                            </svg>
+                            <h2 class="font-DanaDemiBold text-gray-400">مرتب سازی :</h2>
+                        </div>
+                        <div class="flex items-center gap-x-1 lg:gap-x-4 child:transition-all child:cursor-pointer child:rounded-lg child:px-1 child:py-1 child:text-sm child:lg:text-base">
+                            <button type="submit" data-sort="newest"
+                                    class="{% if request.GET.sort_by == 'newest' or not request.GET.sort_by %}text-blue-500{% else %}text-gray-400{% endif %}">
+                                جدید ترین
+                            </button>
+                            <button type="submit" data-sort="oldest"
+                                    class="{% if request.GET.sort_by == 'oldest' %}text-blue-500{% else %}text-gray-400{% endif %}">
+                                قدیمی ترین
+                            </button>
+                            <button type="submit" data-sort="most_viewed"
+                                    class="{% if request.GET.sort_by == 'most_viewed' %}text-blue-500{% else %}text-gray-400{% endif %}">
+                                پر بازدید ترین
+                            </button>
+                        </div>
+                    </div>
+                    <span class="post-count text-sm text-gray-400 end">{{ filtered_posts.count }} پست </span>
+                </div>
+                <!-- POST LIST -->
+                <div id="post-list"
+                     class="grid grid-cols-1 xxs:grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-3 xs:gap-2 sm:gap-4">
+                    <!-- POST ITEM -->
+                    {% include 'blog/list/components/list_partial.html' with post=post %}
+                </div>
+                <!-- PAGINATION -->
+                {% if posts %}
+                    {% render_pagination page_obj %}
+                {% endif %}
+            </div>
+        </div>
+    </main>
+    <div class="overlay"></div>
+    <div class="search-overlay"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/static/scripts/blog-filter.js"></script>
+{% endblock %}

@@ -30,6 +30,24 @@ def apply_filters(request, queryset):
     return queryset
 
 
+def apply_filters_blog(request, queryset):
+    filters = {
+        'category__slug__in': request.GET.get('category', '').split(','),
+    }
+
+    for key, value in filters.items():
+        if value and value != ['']:
+            queryset = queryset.filter(**{key: value})
+
+    if request.GET.get('available') == '1':
+        queryset = queryset.filter(is_stock=True)
+
+    if request.GET.get('featured') == '1':
+        queryset = queryset.filter(featured=True)
+
+    return queryset
+
+
 def mark_favorites(request, products):
     if request.user.is_authenticated:
         favorite_ids = set(
