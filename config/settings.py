@@ -25,16 +25,19 @@ INSTALLED_APPS = [
     # project apps
     'order',
     'accounts',
+    'dashboard',
     'home',
     'core',
     'product',
     'contact',
     'reviews',
+    'blog',
 
     # libs and packages
     'django_render_partial',
     'widget_tweaks',
     'debug_toolbar',
+    'ckeditor'
 ]
 
 MIDDLEWARE = [
@@ -49,6 +52,39 @@ MIDDLEWARE = [
     'config.middleware.AdminRestrictMiddleware',
     'config.middleware.NoIndexAdminMiddleware',
 ]
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'height': 400,
+        'toolbar_Custom': [
+            ['Styles', 'Format', 'Font', 'FontSize'],
+            ['Bold', 'Italic', 'Underline', 'Strike'],
+            ['TextColor', 'BGColor'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Image', 'Table', 'HorizontalRule', 'SpecialChar'],
+            ['CodeSnippet'],
+            ['RemoveFormat', 'Source'],
+            ['Undo', 'Redo'],
+        ],
+        'extraPlugins': ','.join([
+            'codesnippet',
+            'image2',
+            'justify',
+            'autolink',
+            'clipboard',
+            'lineutils',
+            'widget',
+            'dialog',
+            'dialogui'
+        ]),
+        'codeSnippet_theme': 'monokai_sublime',
+    }
+}
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
 ROOT_URLCONF = 'config.urls'
 

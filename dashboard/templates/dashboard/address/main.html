@@ -1,0 +1,13 @@
+{% extends 'dashboard/shared/base.html' %}
+
+{% block title %}
+    آدرس های من
+{% endblock %}
+
+{% block content %}
+    <div class="flex flex-col shadow rounded-lg p-4 dark:bg-gray-800 bg-white">
+        {% include 'dashboard/address/list.html' %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/static/scripts/address-delete.js"></script>
+{% endblock %}

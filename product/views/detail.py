@@ -1,13 +1,14 @@
+from core.http_service import get_request_client_info
 from django.db.models import Q, Count
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.views.generic import DetailView
-
 from core.actions import mark_favorites
+from core.clean import create_visit_clean
 from product.helper import ProductDataFetcher
-from product.models import Product, Favorite
+from product.models import Product, ProductVisit
 from reviews.models import ProductReview
 
 
@@ -42,7 +43,17 @@ class ProductDetailView(DetailView):
             'related_products': related_products,
         })
 
+        create_visit_clean(
+            user=self.request.user,
+            model=ProductVisit,
+            request=self.request,
+            fk_name='product',
+            http_service=get_request_client_info,
+            loaded_obj=self.object,
+        )
+
         mark_favorites(self.request, context['related_products'])
+        mark_favorites(self.request, context['product'])
 
         return context
 
@@ -59,7 +70,7 @@ def add_product_review(request: HttpRequest):
     if not product_id:
         return JsonResponse({'error': 'اطلاعات ناقص است'}, status=400)
 
-    new_review = ProductReview.objects.create(
+    ProductReview.objects.create(
         user=request.user,
         product_id=product_id,
         title=title,
@@ -67,11 +78,14 @@ def add_product_review(request: HttpRequest):
         recommendation=recommendation
     )
 
+    reviews_qs = ProductReview.objects.filter(product_id=product_id)
+    reviews_count = reviews_qs.count()
+
     fetcher = ProductDataFetcher(product_id, request.user)
     liked_ids, disliked_ids = fetcher.get_user_reaction_ids()
 
     reviews = (
-        ProductReview.objects.filter(product_id=product_id)
+        reviews_qs
         .select_related('user')
         .annotate(
             like_count=Count('reactions', filter=Q(reactions__reaction='like')),
@@ -89,7 +103,11 @@ def add_product_review(request: HttpRequest):
         },
         request=request
     )
-    return JsonResponse({'success': True, 'html': html})
+    return JsonResponse({
+        'success': True,
+        'html': html,
+        'reviews_count': reviews_count,
+    })
 
 
 @require_POST

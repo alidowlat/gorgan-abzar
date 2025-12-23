@@ -1,0 +1,68 @@
+{% load extra_filters %}
+<div class="lg:sticky mb-8 top-1 h-fit lg:w-1/4 hidden lg:flex flex-col gap-y-4 items-center shadow rounded-lg p-4 dark:bg-gray-800 bg-white">
+    <!-- NAME AND AVATAR  -->
+    <div class="w-full flex items-center justify-between border-b border-gray-200 dark:border-white/20 py-3">
+        <div class="flex items-center gap-x-3">
+            <img src="/static/images/svg/user.png" class="size-10 ring-2 ring-gray-400/20 rounded-full" alt="AVATAR">
+            <span class="flex flex-col gap-y-2">
+                <p class="font-DanaMedium text-lg">{{ request.user.get_full_name }}</p>
+                <p class="text-gray-400">{{ request.user.phone_number }}</p>
+            </span>
+        </div>
+        <a href="{% url 'profile_edit_view' %}">
+            <span>
+                <svg class="w-6 h-6 cursor-pointer text-blue-500">
+                    <use href="#edit"></use>
+                </svg>
+            </span>
+        </a>
+    </div>
+    <ul class="w-full relative space-y-2 child:duration-300 child:transition-all child:py-3  child:px-2 child:flex child:gap-x-2 text-lg child:cursor-pointer child:rounded-lg">
+        <li class="relative {% if request.path == '/dashboard/' %}bg-blue-500/10 text-blue-500{% else %}hover:text-blue-500{% endif %}">
+            <a href="{% url 'dashboard_view' %}" class="absolute inset-0"></a>
+            <svg class="w-6 h-6">
+                <use href="#squares"></use>
+            </svg>
+            <span>داشبورد</span>
+        </li>
+
+        <li class="relative {% if request.path|startswith:'/dashboard/orders' %}bg-blue-500/10 text-blue-500{% else %}hover:text-blue-500{% endif %}">
+            <a href="{% url 'orders_view' %}" class="absolute inset-0"></a>
+            <svg class="w-6 h-6">
+                <use href="#shopping-bag"></use>
+            </svg>
+            <span>سفارش ها</span>
+        </li>
+
+        <li class="relative {% if request.path|startswith:'/dashboard/favorites' %}bg-blue-500/10 text-blue-500{% else %}hover:text-blue-500{% endif %}">
+            <a href="{% url 'favorite_products_view' %}" class="absolute inset-0"></a>
+            <svg class="w-6 h-6">
+                <use href="#heart"></use>
+            </svg>
+            <span>علاقه‌مندی ها</span>
+        </li>
+
+        <li class="relative {% if request.path|startswith:'/dashboard/address' %}bg-blue-500/10 text-blue-500{% else %}hover:text-blue-500{% endif %}">
+            <a href="{% url 'address_list_view' %}" class="absolute inset-0"></a>
+            <svg class="w-6 h-6">
+                <use href="#map"></use>
+            </svg>
+            <span>آدرس ها</span>
+        </li>
+
+        <li class="relative {% if request.path|startswith:'/dashboard/profile' %}bg-blue-500/10 text-blue-500{% else %}hover:text-blue-500{% endif %}">
+            <a href="{% url 'profile_view' %}" class="absolute inset-0"></a>
+            <svg class="w-6 h-6">
+                <use href="#cog"></use>
+            </svg>
+            <span>اطلاعات حساب</span>
+        </li>
+
+        <li class="text-red-400">
+            <svg class="w-6 h-6 ">
+                <use href="#arrow-left-end"></use>
+            </svg>
+            <a href="{% url 'logout' %}">خروج</a>
+        </li>
+    </ul>
+</div>

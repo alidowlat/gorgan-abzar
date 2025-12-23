@@ -49,30 +49,6 @@
 
         </div>
 
-        {#        <fieldset class="flex items-center gap-4">#}
-        {#            <div class="w-full">#}
-        {#                <input type="radio" name="recommendation" id="suggest-like" value="good" class="peer hidden">#}
-        {#                <label for="suggest-like"#}
-        {#                       class="peer-checked:border-success block w-full p-2 border rounded-lg cursor-pointer">#}
-        {#                    <div class="flex items-center justify-center gap-2 text-success">#}
-        {#                        <div class="i-lucide-thumbs-up size-5"></div>#}
-        {#                        <span>میکنم</span>#}
-        {#                    </div>#}
-        {#                </label>#}
-        {#            </div>#}
-        {##}
-        {#            <div class="w-full">#}
-        {#                <input type="radio" name="recommendation" id="suggest-dislike" value="bad" class="peer hidden">#}
-        {#                <label for="suggest-dislike"#}
-        {#                       class="peer-checked:border-warning block w-full p-2 border rounded-lg cursor-pointer">#}
-        {#                    <div class="flex items-center justify-center gap-2 text-warning">#}
-        {#                        <div class="i-lucide-thumbs-down size-5"></div>#}
-        {#                        <span>نمیکنم</span>#}
-        {#                    </div>#}
-        {#                </label>#}
-        {#            </div>#}
-        {#        </fieldset>#}
-
         <textarea id="message" class="h-24 tailwind-input" placeholder="متن دیدگاه"></textarea>
 
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
@@ -90,7 +66,16 @@
     <!-- ALL COMMENTS -->
     <ul id="reviews-container" class="lg:w-3/4 flex flex-col gap-y-2 child:w-full">
         {% include "product/detail/components/review_list.html" with reviews=reviews %}
+        {% if reviews.count > 5 %}
+            <button class="more-comment-btn w-full flex items-center justify-center gap-x-1 my-4 text-blue-600 dark:text-blue-400 font-DanaMedium">
+                <p class="more-comment-text">مشاهده بیشتر</p>
+                <svg class="size-4 more-comment-icon">
+                    <use href="#chevron"></use>
+                </svg>
+            </button>
+        {% endif %}
     </ul>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

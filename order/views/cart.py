@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import View
 from order.models import Order
 from order.utils.cart_manager import CartManager
@@ -7,7 +7,7 @@ from order.utils.cart_manager import CartManager
 
 class UserCartView(LoginRequiredMixin, View):
     def get(self, request):
-        order = Order.objects.filter(user=request.user, is_paid=False).first()
+        order, _ = Order.objects.get_or_create(user=request.user, is_paid=False)
 
         cart = CartManager(order)
         cart.sync_prices()

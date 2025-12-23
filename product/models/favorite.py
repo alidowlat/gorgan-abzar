@@ -9,5 +9,8 @@ class Favorite(AbstractFavorite):
         return f'{self.user} -> {self.product.title}'
 
     class Meta:
+        ordering = ('-created_at',)
         unique_together = ('user', 'product')
+        verbose_name = 'Favorite'
+        verbose_name_plural = 'Favorites'
         db_table = 'favorite_products'

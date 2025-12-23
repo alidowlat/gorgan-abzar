@@ -91,13 +91,12 @@ def shorten_filename(value, max_length=30):
     return f"{base}{ext}"
 
 
-@register.filter(name='show_date')
-def show_jalali_date(value):
-    if value:
-        iran_tz = pytz.timezone('Asia/Tehran')
-        localized_time = value.astimezone(iran_tz)
-        return jdatetime.fromgregorian(datetime=localized_time).strftime('%Y/%m/%d - %H:%M:%S')
-    return ""
+@register.filter(name='show_date_and_time')
+def show_datetime_jalali(value):
+    if not value:
+        return ''
+    jdt = jdatetime.datetime.fromgregorian(datetime=value)
+    return f"{jdt.hour:02}:{jdt.minute:02} - {jdt.year}/{jdt.month:02}/{jdt.day:02}"
 
 
 JALALI_MONTHS = [
@@ -121,6 +120,13 @@ def to_jalali(value):
         return ''
     jalali_date = jdatetime.datetime.fromgregorian(datetime=value)
     return f"{jalali_date.year}/{jalali_date.month}/{jalali_date.day}"
+
+@register.filter(name='show_date_time')
+def show_datetime_jalali(value):
+    if not value:
+        return ''
+    jdt = jdatetime.datetime.fromgregorian(datetime=value)
+    return f"{jdt.year}/{jdt.month:02}/{jdt.day:02} - {jdt.hour:02}:{jdt.minute:02}"
 
 
 @register.filter(name='show_date_slash')

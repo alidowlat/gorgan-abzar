@@ -1,0 +1,15 @@
+{% extends 'dashboard/shared/base.html' %}
+{% load extra_filters %}
+
+{% block title %}
+    علاقه مندی ها
+{% endblock %}
+
+{% block content %}
+    <div class="flex flex-col rounded-lg p-4">
+        <!-- PRODUCTS -->
+        {% include 'dashboard/favorites/list.html' %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/static/scripts/favorite-delete.js"></script>
+{% endblock %}

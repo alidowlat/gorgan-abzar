@@ -1,0 +1,173 @@
+<div class="flex lg:hidden items-center gap-x-2">
+    <!-- SORT BTN -->
+    <button class="sort-modal-open text-sm mb-4 py-1.5 px-3 app-border rounded-full flex items-center gap-x-1">
+        <svg class="size-4 text-gray-400">
+            <use href="#sort-list"></use>
+        </svg>
+        <p>مرتبط ترین</p>
+    </button>
+    <!-- SORT MODAL -->
+    <div class="sort-modal">
+        <div class="flex justify-between sort-modal-close">
+            <p>مرتب سازی بر اساس </p>
+            <svg class="size-5 text-gray-800 dark:text-gray-300">
+                <use href="#x-mark"></use>
+            </svg>
+        </div>
+        <div class="flex w-full child:w-full child:text-center flex-col items-center justify-center divide-y divide-gray-300 dark:divide-gray-200/20 child:py-3">
+            <button type="submit" data-sort="newest"
+                    class="{% if request.GET.sort_by == 'newest' or not request.GET.sort_by %}text-blue-500{% else %}text-gray-400{% endif %}">
+                جدید ترین
+            </button>
+            <button type="submit" data-sort="most_viewed"
+                    class="{% if request.GET.sort_by == 'most_viewed' %}text-blue-500{% else %}text-gray-400{% endif %}">
+                پربازدید ترین
+            </button>
+            <button type="submit" data-sort="cheapest"
+                    class="{% if request.GET.sort_by == 'cheapest' %}text-blue-500{% else %}text-gray-400{% endif %}">
+                ارزان ترین
+            </button>
+            <button type="submit" data-sort="most_expensive"
+                    class="{% if request.GET.sort_by == 'most_expensive' %}text-blue-500{% else %}text-gray-400{% endif %}">
+                گران ترین
+            </button>
+        </div>
+    </div>
+    <!-- FILTER BTN -->
+    <button class="filter-modal-open text-sm mb-4 py-1.5 px-3 app-border rounded-full flex items-center gap-x-1">
+        <svg class="size-4 text-gray-400">
+            <use href="#filter"></use>
+        </svg>
+        <p>فیلتر</p>
+    </button>
+    <!-- Filter MODAL -->
+    <div class="filter-modal">
+        <div class="flex justify-between filter-modal-close">
+            <p>فیلتر</p>
+            <svg class="size-5 text-gray-800 dark:text-gray-300">
+                <use href="#x-mark"></use>
+            </svg>
+        </div>
+        <!-- FILTERS -->
+        <div class="w-full divide-y divide-slate-200 dark:divide-gray-700/20">
+            <!-- Accordion -->
+            <div id="filter-categories">
+                <button onclick="toggleAccordion(3)"
+                        class="w-full flex justify-between items-center px-2 xl:px-4 pt-4 mb-4 text-gray-800 dark:text-gray-100">
+                    <span>دسته بندی </span>
+                    <span id="icon-3" class="text-gray-800 dark:text-gray-100">
+                        <svg class="size-4 transition-transform duration-300">
+                            <use href="#chevron-left"></use>
+                        </svg>
+                    </span>
+                </button>
+                <div id="content-3" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                    <div class="pb-3 text-gray-700 dark:text-gray-300 w-full flex flex-col gap-y-1.5">
+                        {% for category in categories %}
+                            <div class="inline-flex items-center mr-2.5 mt-1">
+                                <label class="relative flex cursor-pointer items-center rounded-full p-3"
+                                       for="category-{{ category.slug }}" data-ripple-dark="true">
+                                    <input value="{{ category.slug }}"
+                                           data-device="mobile"
+                                           type="checkbox"
+                                           name="category"
+                                           class="peer relative h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 shadow hover:shadow-md transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-slate-400 before:opacity-0 before:transition-opacity checked:border-blue-500 checked:bg-blue-500 checked:before:bg-slate-400 hover:before:opacity-10 dark:bg-gray-600 dark:checked:bg-blue-500">
+                                    <span class="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                 fill="currentColor" stroke="currentColor" stroke-width="1">
+                                <path fill-rule="evenodd"
+                                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                      clip-rule="evenodd">
+                                </path>
+                            </svg>
+                        </span>
+                                </label>
+                                <label class="cursor-pointer text-gray-800 dark:text-gray-400 mr-1"
+                                       for="category-{{ category.slug }}">
+                                    {{ category.title }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div id="filter-brands">
+                <button onclick="toggleAccordion(4)"
+                        class="w-full flex justify-between items-center px-2 xl:px-4 pt-4 mb-4 text-gray-800 dark:text-gray-100">
+                    <span>برند ها</span>
+                    <span id="icon-4" class="text-gray-800 dark:text-gray-100">
+                        <svg class="size-4 transition-transform duration-300">
+                            <use href="#chevron-left"></use>
+                        </svg>
+                    </span>
+                </button>
+                <div id="content-4" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                    <div class="pb-3 text-gray-700 dark:text-gray-300 w-full flex flex-col gap-y-1.5">
+                        {% for brand in brands %}
+                            <div class="inline-flex items-center mr-2.5 mt-1">
+                                <label class="relative flex cursor-pointer items-center rounded-full p-3"
+                                       for="brand-{{ brand.slug }}" data-ripple-dark="true">
+                                    <input value="{{ brand.slug }}"
+                                           data-device="mobile"
+                                           type="checkbox"
+                                           name="brand"
+                                           class="peer relative h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 shadow hover:shadow-md transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-slate-400 before:opacity-0 before:transition-opacity checked:border-blue-500 checked:bg-blue-500 checked:before:bg-slate-400 hover:before:opacity-10 dark:bg-gray-600 dark:checked:bg-blue-500">
+                                    <span class="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20"
+                                 fill="currentColor" stroke="currentColor" stroke-width="1">
+                                <path fill-rule="evenodd"
+                                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                      clip-rule="evenodd">
+                                </path>
+                            </svg>
+                        </span>
+                                </label>
+                                <label class="cursor-pointer text-gray-800 dark:text-gray-400 mr-1"
+                                       for="brand-{{ brand.slug }}">
+                                    {{ brand.title }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOGGLE SWITCH -->
+            {% for toggle in mobile_toggles %}
+                <div class="w-full justify-between flex items-center gap-x-3 px-2 xl:px-4 py-4" dir="ltr">
+                    <label for="{{ toggle.id }}" class="relative inline-block w-11 h-6 cursor-pointer">
+                        <input data-device="desktop"
+                               type="checkbox"
+                               id="{{ toggle.id }}"
+                               name="{{ toggle.name }}"
+                               class="peer sr-only"
+                               value="{{ toggle.value }}"
+                               {% if toggle.checked %}checked{% endif %}>
+                        <span class="absolute inset-0 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out
+                     peer-checked:bg-blue-500 dark:bg-neutral-700 dark:peer-checked:bg-blue-500
+                     peer-disabled:opacity-50 peer-disabled:pointer-events-none"></span>
+                        <span class="absolute top-1/2 start-0.5 -translate-y-1/2 size-5 bg-white rounded-full shadow-xs
+                     transition-transform duration-200 ease-in-out peer-checked:translate-x-full
+                     dark:bg-neutral-400 dark:peer-checked:bg-white"></span>
+                    </label>
+                    <label for="{{ toggle.id }}" class="text-gray-800 dark:text-gray-100">
+                        {{ toggle.label }}
+                    </label>
+                </div>
+            {% endfor %}
+
+            <div class="w-full justify-between flex items-center gap-x-3 px-2 xl:px-4 py-4" dir="ltr">
+                <label for="hs-valid-toggle-switch5" class="relative inline-block w-11 h-6 cursor-pointer">
+                    <input type="checkbox" id="hs-valid-toggle-switch5" class="peer sr-only">
+                    <span class="absolute inset-0 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out peer-checked:bg-blue-500 dark:bg-neutral-700 dark:peer-checked:bg-blue-500 peer-disabled:opacity-50 peer-disabled:pointer-events-none"></span>
+                    <span class="absolute top-1/2 start-0.5 -translate-y-1/2 size-5 bg-white rounded-full shadow-xs transition-transform duration-200 ease-in-out peer-checked:translate-x-full dark:bg-neutral-400 dark:peer-checked:bg-white"></span>
+                </label>
+                <label for="hs-valid-toggle-switch5" class="text-gray-800 dark:text-gray-100">
+                    بی ادب
+                </label>
+            </div>
+        </div>
+    </div>
+    <span class="post-count text-sm text-gray-400 ms-auto py-1.5 px-4">{{ filtered_posts.count }} کالا </span>
+</div>

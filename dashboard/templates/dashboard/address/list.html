@@ -1,0 +1,37 @@
+<div id="address-container">
+    {% if address_list %}
+        <div class="flex items-center justify-between">
+             <span class="flex items-center gap-x-2">
+                <img src="/static/images/svg/map.png" class="w-7" alt="svg">
+                <h2 class="font-DanaMedium text-lg">آدرس های من</h2>
+            </span>
+            <a href="{% url 'address_create_view' %}" class="group shadow-xl text-sm md:text-base flex gap-x-1.5 items-center px-2 h-10 md:px-3 text-white bg-blue-600 rounded-xl">
+                <p>آدرس جدید</p>
+                <span class="w-7 h-7 rounded-full bg-blue-500 flex-center md:group-hover:-translate-x-1 transition-transform duration-300">
+                    <svg class="size-5">
+                        <use href="#plus"></use>
+                    </svg>
+                </span>
+            </a>
+        </div>
+        <ul id="address-list" class="mt-5 space-y-3">
+            {% for address in address_list %}
+                {% include 'dashboard/address/item.html' %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <section id="address-empty"
+                 class="flex flex-col items-center justify-center rounded-lg p-4 dark:bg-gray-800 bg-white gap-y-3 mt-5">
+            <img class="max-w-60" src="/static/images/svg/empty-cart.svg" alt="">
+            <h1 class="font-DanaDemiBold text-gray-700 dark:text-gray-300 text-2xl mt-2">
+                شما آدرس ثبت شده ای ندارید
+            </h1>
+            <a class="flex items-center justify-center w-fit text-sky-500 mb-4" href="{% url 'address_create_view' %}">
+                افزودن آدرس
+                <svg class="size-4 mb-0.5">
+                    <use href="#chevron-left"></use>
+                </svg>
+            </a>
+        </section>
+    {% endif %}
+</div>

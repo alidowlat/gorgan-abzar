@@ -59,12 +59,12 @@ class CartManager:
 
         for item in self.items:
             p = item.product
-            raw_total = p.price * item.count
-            final_total = item.unit_price * item.count
-
             total_before += p.price * item.count
             total_after += item.unit_price * item.count
             total_items += item.count
+
+            raw_total = p.price * item.count
+            final_total = item.unit_price * item.count
 
             # total_before += raw_total
             # total_after += final_total
@@ -93,9 +93,6 @@ class CartManager:
         if self.order.discount_code:
             discount_amount = self.order.discount_code.apply_discount(total_after)
             final_price -= discount_amount
-
-        if self.order.discount_code:
-            final_price = self.order.apply_discount(final_price)
 
         return {
             "items": output_items,

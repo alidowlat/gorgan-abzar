@@ -1,0 +1,129 @@
+{% extends 'dashboard/shared/base.html' %}
+{% load pagination_tags %}
+{% load extra_filters %}
+
+{% block title %}
+    سفارشات من
+{% endblock %}
+
+{% block content %}
+    {% if orders %}
+        <div class="flex flex-col shadow rounded-lg p-4 dark:bg-gray-800 bg-white">
+            <div class="flex justify-between">
+                <span class="flex items-center gap-x-2">
+                    <img src="/static/images/svg/status-delivered.svg" class="w-10" alt="svg">
+                    <h2 class="font-DanaMedium text-lg">سفارش های اخیر :</h2>
+                </span>
+                <span class="flex items-center gap-x-2">
+                    <a href="{% url 'dashboard_view' %}"
+                       class="w-24 group shadow-xl text-base flex gap-x-1.5 items-center px-2 py-1 dark:text-white bg-gray-200 dark:bg-gray-900 rounded-xl">
+                        <p>بازگشت</p>
+                        <span class="w-6 h-6 rounded-full bg-gray-50 dark:bg-gray-800 flex-center md:group-hover:-translate-x-1 transition-transform duration-300">
+                            <svg class="size-4 rotate-90">
+                                <use href="#chevron"></use>
+                            </svg>
+                        </span>
+                    </a>
+                </span>
+            </div>
+            <div class="relative mt-5 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+                <table class="w-full text-sm text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700  bg-gray-100 dark:bg-gray-900 dark:text-gray-200">
+                    <tr>
+                        <th scope="col" class="px-6 py-3.5">
+                            شماره
+                        </th>
+                        <th scope="col" class="px-6 py-3.5">
+                            کد پیگیری
+                        </th>
+                        <th scope="col" class="px-6 py-3.5">
+                            آخرین بروزرسانی
+                        </th>
+                        <th scope="col" class="px-6 py-3.5">
+                            مجموع قیمت
+                        </th>
+                        <th scope="col" class="px-6 py-3.5">
+                            وضعیت
+                        </th>
+                        <th scope="col" class="px-6 py-3.5">
+                            جزئیات
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="orders-wrapper">
+                    {% for order in orders %}
+                        <tr class="bg-white border-b cursor-pointer dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+                            <td class="px-6 py-5">
+                                {{ page_obj.start_index|add:forloop.counter0 }}
+                            </td>
+                            <th scope="row"
+                                class="px-6 py-5 font-DanaDemiBold font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center gap-x-2">
+                                {{ order.tracking_code|default:'-' }}
+                            </th>
+                            <td dir="ltr" class="px-6 py-5 text-gray-900 dark:text-white">
+                                {{ order.updated_at|show_date_time }}
+                            </td>
+                            <td class="font-DanaDemiBold text-gray-900 dark:text-white px-6 py-5">
+                                {{ order.get_total_price|three_digits }} تومان
+                            </td>
+                            <td class="px-6 py-5 {{ order.get_status_style.color }} font-DanaDemiBold">
+                                {{ order.get_status_display }}
+                            </td>
+                            {% if order.is_paid %}
+                                <td class="px-6 py-5 transition-all hover:text-gray-100 font-DanaDemiBold">
+                                    <a href="{% url 'order_items_view' order.id %}"
+                                       class="bg-blue-500/10 text-gray-900 dark:text-white py-1 px-2 rounded-lg">مشاهده</a>
+                                </td>
+                            {% else %}
+                                <td class="px-6 py-5 font-DanaDemiBold">
+                                    <a href="{% url 'user_cart_view' %}"
+                                       class="bg-blue-500/10 text-gray-900 dark:text-white py-1 px-2 rounded-lg">برو به سبد خرید</a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% render_pagination page_obj %}
+    {% else %}
+        <section class="flex flex-col items-center justify-center shadow rounded-lg p-4 dark:bg-gray-800 bg-white gap-y-3 mt-5">
+            <img class="max-w-60" src="/static/images/svg/empty-cart.svg" alt="">
+            <h1 class="font-DanaDemiBold text-gray-700 dark:text-gray-300 text-2xl mt-2">
+                تا کنون سفارشی ثبت نکرده اید
+            </h1>
+            <a class="flex items-center justify-center w-fit text-sky-500 mb-4" href="{% url 'product_list' %}">
+                مشاهده فروشگاه
+                <svg class="size-4 mb-0.5">
+                    <use href="#chevron-left"></use>
+                </svg>
+            </a>
+        </section>
+    {% endif %}
+    <script>
+        document.addEventListener("click", function (e) {
+            const link = e.target.closest("#pagination-wrapper a");
+            if (!link) return;
+            e.preventDefault();
+            const url = link.getAttribute("href");
+            fetch(url, {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+                .then(res => res.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+                    const newContent = doc.querySelector("#orders-wrapper");
+                    const newPagination = doc.querySelector("#pagination-wrapper");
+                    if (newContent && newPagination) {
+                        document.querySelector("#orders-wrapper").innerHTML = newContent.innerHTML;
+                        document.querySelector("#pagination-wrapper").innerHTML = newPagination.innerHTML;
+                    }
+                    window.history.pushState({}, "", url);
+                });
+        });
+    </script>
+{% endblock %}

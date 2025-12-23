@@ -1,0 +1,29 @@
+{% load extra_filters %}
+<div>
+    <span class="border-b border-gray-600/20">
+        <h4 class="font-MorabbaMedium text-center text-xl mb-4">جدیدترین مقالات</h4>
+    </span>
+    <ul class="w-full child:flex child:items-center child:gap-x-2 child:cursor-pointer space-y-4 ">
+        {% for post in latest_posts %}
+            <li>
+                <img class="w-24 h-16 object-cover rounded-lg" src="{{ post.image.url }}" alt="{{ post.slug }}">
+                <a href="{{ post.get_absolute_url }}" class="flex flex-col gap-y-2 ">
+                    <p class="line-clamp-1">{{ post.title }}</p>
+                    <span class="flex items-center gap-x-1 text-sm text-gray-400">
+                        <svg class="w-4 h-4 mb-1">
+                            <use href="#calendar"></use>
+                        </svg>
+                        {{ post.created_at|show_date_default }}
+                    </span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'post_list' %}"
+       class="py-1.5 gap-x-1 bg-blue-500 hover:bg-blue-600 flex items-center justify-center text-white rounded-lg transition-all">مشاهده
+        بیشتر
+        <svg class="w-4 h-4">
+            <use href="#chevron-left"></use>
+        </svg>
+    </a>
+</div>

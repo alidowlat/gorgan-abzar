@@ -1,10 +1,16 @@
 {% load extra_filters %}
 {% for r in reviews %}
-    <li class="flex flex-col py-4 border-b border-gray-200 dark:border-b-gray-200/20">
+    <li class="{% if 5 < forloop.counter %}hidden-comment-item hidden{% endif %} flex flex-col py-4 border-b border-gray-200 dark:border-b-gray-200/20 ">
         <!-- TITLE -->
         <div class="flex items-center gap-x-2 mb-2">
             <h2 class="font-DanaMedium text-lg">{{ r.title }}</h2>
-            <span class="px-2 py-1 rounded-lg bg-blue-500 text-white text-xs">خریدار</span>
+            <span class="px-2 py-1 rounded-lg bg-blue-500 text-white text-xs">
+                {% if r.user.get_full_name %}
+                    {{ r.user.get_full_name }}
+                {% else %}
+                    کاربر
+                {% endif %}
+            </span>
         </div>
 
         <!-- COMMENT TEXT -->

@@ -1,0 +1,86 @@
+{% load extra_filters %}
+{% load render_partial %}
+<!doctype html>
+<html class="dark" lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %} | {{ SITE_TITLE }}</title>
+    {% render_partial 'home.views.site_header_component' %}
+    <link rel="stylesheet" href="/static/css/swiper-bundle.css">
+    <meta name="description" content="#">
+    <meta name="keywords" content="}">
+    <meta name="author" content="#">
+    <link rel="canonical" href="#">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="#">
+    <meta property="og:description" content="#">
+    <meta property="og:image" content="#">
+    <meta property="og:url" content="#">
+    <meta property="og:site_name" content="#">
+    <meta name="twitter:card" content="#">
+    <meta name="twitter:title" content="#">
+    <meta name="twitter:description" content="#">
+    <meta name="twitter:image" content="#">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "#",
+          "url": "#",
+          "logo": "#"
+        }
+    </script>
+    <meta name="robots" content="index, follow">
+    {% include 'shared/header_ref.html' %}
+    {% block extra_header %}{% endblock %}
+</head>
+<body>
+{% include 'dashboard/shared/svg.html' %}
+<main class="container relative">
+    <div class="flex flex-col lg:flex-row gap-x-8 mt-10">
+        {% include 'dashboard/shared/desktop_menu.html' %}
+        <div class="lg:w-3/4">
+            {% include 'dashboard/shared/mobile_menu.html' %}
+            {% if request.resolver_match.url_name == 'dashboard_view' %}
+                <div class="grid grid-cols-12 child:col-span-12 mt-5 lg:mt-0 md:child:col-span-4 gap-4 child:rounded-lg child:bg-white child:dark:bg-gray-800 child:w-full child:flex child:shadow child:p-4">
+                    <div class="flex items-center gap-x-4">
+                        <svg class="size-9 text-blue-500">
+                            <use href="#shopping-bag"></use>
+                        </svg>
+                        <div class="flex flex-col gap-y-1">
+                            <h2 class="font-DanaDemiBold">سفارش‌ها</h2>
+                            <p class="text-gray-500">10 سفارش</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-x-4">
+                        <svg class="size-9 text-blue-500">
+                            <use href="#wallet"></use>
+                        </svg>
+                        <div class="flex flex-col gap-y-1">
+                            <h2 class="font-DanaDemiBold">کیف‌پول</h2>
+                            <p class="text-gray-500">موجودی : <span>0 تومان</span></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-x-4">
+                        <svg class="size-9 text-blue-500">
+                            <use href="#ticket"></use>
+                        </svg>
+                        <div class="flex flex-col gap-y-1">
+                            <h2 class="font-DanaDemiBold">تیکت‌ها</h2>
+                            <p class="text-gray-500">5 تیکت</p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</main>
+<div class="overlay"></div>
+<div class="search-overlay"></div>
+
+<script src="/static/scripts/app.js"></script>
+<script src="/static/scripts/dashboard.js"></script>
+</body>
+</html>

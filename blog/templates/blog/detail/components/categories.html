@@ -1,0 +1,20 @@
+<div>
+    <span class="border-b border-gray-600/20">
+        <h4 class="font-MorabbaMedium text-xl text-center mb-4">دسته بندی ها</h4>
+    </span>
+    <ul class="child:flex child:items-center child:justify-between child:cursor-pointer space-y-3">
+        {% for category in categories %}
+            <li class="group">
+                <a href="{{ category.get_absolute_url }}">
+                    <span class="flex items-center justify-center gap-x-1 group-hover:pr-2 duration-300 transition-all group-hover:text-blue-500">
+                        <p>{{ category.title }}</p>
+                        <svg class="w-4 h-4">
+                            <use href="#chevron-left"></use>
+                        </svg>
+                    </span>
+                </a>
+                <span class="w-5 h-5 flex items-center justify-center rounded-lg text-white bg-blue-500 text-xs">{{ category.posts.count }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

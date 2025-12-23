@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from accounts.models import User
+from accounts.models import User, UserAddress
 from core.models import Settings
 
 
@@ -23,6 +23,73 @@ class UserAdmin(BaseUserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('phone_number', 'email', 'password1', 'password2'),
+        }),
+    )
+
+
+@admin.register(UserAddress)
+class UserAddressAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "user",
+        "full_name",
+        "state",
+        "city",
+        "is_default",
+        "created_at",
+    )
+    list_filter = (
+        "is_default",
+        "state",
+        "city",
+        "created_at",
+    )
+    search_fields = (
+        "full_name",
+        "phone_number",
+        "postal_code",
+        "full_address",
+        "user__phone_number",
+        "user__email",
+    )
+    ordering = (
+        "-is_default",
+        "-created_at",
+    )
+    raw_id_fields = (
+        "user",
+    )
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+    )
+    fieldsets = (
+        (None, {
+            "fields": (
+                "user",
+                "is_default",
+            )
+        }),
+        ("User Information", {
+            "fields": (
+                "full_name",
+                "phone_number",
+            )
+        }),
+        ("Address Information", {
+            "fields": (
+                "state",
+                "city",
+                "postal_code",
+                "plaque",
+                "full_address",
+            )
+        }),
+        ("Date and Time", {
+            "fields": (
+                "created_at",
+                "updated_at",
+            )
         }),
     )
 

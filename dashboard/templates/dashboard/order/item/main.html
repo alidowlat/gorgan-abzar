@@ -1,0 +1,100 @@
+{% extends 'dashboard/shared/base.html' %}
+{% load extra_filters %}
+
+{% block title %}
+    سفارشات من
+{% endblock %}
+
+{% block content %}
+    {% if items %}
+        <div class="flex flex-col shadow rounded-lg p-4 dark:bg-gray-800 bg-white">
+            <div class="flex justify-between">
+                <span class="flex items-center gap-x-2">
+                    <img src="/static/images/svg/checkout.png" class="w-10" alt="svg">
+                    <h2 class="font-DanaMedium text-lg">جزئیات سفارش</h2>
+                </span>
+                <span class="flex items-center gap-x-2">
+                    <a href="{% url 'orders_view' %}"
+                       class="w-24 group shadow-xl text-base flex gap-x-1.5 items-center px-2 py-1 dark:text-white bg-gray-200 dark:bg-gray-900 rounded-xl">
+                        <p>بازگشت</p>
+                        <span class="w-6 h-6 rounded-full bg-gray-50 dark:bg-gray-800 flex-center md:group-hover:-translate-x-1 transition-transform duration-300">
+                            <svg class="size-4 rotate-90">
+                                <use href="#chevron"></use>
+                            </svg>
+                        </span>
+                    </a>
+                </span>
+            </div>
+            <div class="grid grid-cols-12 mt-6 gap-2 child:p-2 child:h-16 child:bg-gray-100 dark:child:bg-gray-900 child:rounded-lg child:flex child:flex-col child:gap-y-1.5">
+                <div class="col-span-12 md:col-span-6 xl:col-span-4 text-center">
+                    <p class="text-sm text-gray-500">تاریخ پرداخت</p>
+                    <p class="line-clamp-1 font-DanaDemiBold text-sm text-slate-800 dark:text-slate-200">{{ order.paid_at|show_date_and_time }}</p>
+                </div>
+                <div class="col-span-12 md:col-span-6 xl:col-span-4 text-center">
+                    <p class="text-sm text-gray-500">کد پیگیری</p>
+                    <p class="line-clamp-1 font-DanaDemiBold text-sm text-slate-800 dark:text-slate-200">{{ order.tracking_code }}</p>
+                </div>
+                <div class="col-span-12 md:col-span-6 xl:col-span-4 text-center">
+                    <p class="text-sm text-gray-500">وضعیت مرسوله</p>
+                    <p class="line-clamp-1 font-DanaDemiBold text-sm text-slate-800 dark:text-slate-200">{{ order.get_status_display }}</p>
+                </div>
+            </div>
+            <span class="flex items-center gap-x-2 mt-6">
+                <img src="/static/images/svg/checkout.png" class="w-10" alt="">
+                <h2 class="font-DanaMedium text-lg">جزئیات مالی</h2>
+            </span>
+            <div class="grid grid-cols-12 mt-6 gap-2 child:p-2 child:h-16 child:bg-gray-100 dark:child:bg-gray-900 child:rounded-lg child:flex child:flex-col child:gap-y-1.5">
+                <div class="col-span-12 md:col-span-6 xl:col-span-4 text-center">
+                    <p class="text-sm text-gray-500">جمع کل</p>
+                    <p class="line-clamp-1 font-DanaDemiBold text-sm text-slate-800 dark:text-slate-200">{{ order.get_final_price|three_digits_toman }}</p>
+                </div>
+                <div class="col-span-12 md:col-span-6 xl:col-span-4 text-center">
+                    <p class="text-sm text-gray-500">هزینه حمل و نقل</p>
+                    <p class="line-clamp-1 font-DanaDemiBold text-sm text-slate-800 dark:text-slate-200">{{ order.shipping|three_digits_toman }}</p>
+                </div>
+                <div class="col-span-12 md:col-span-6 xl:col-span-4 text-center">
+                    <p class="text-sm text-gray-500">تخفیف کالا ها</p>
+                    <p class="line-clamp-1 font-DanaDemiBold text-sm text-slate-800 dark:text-slate-200">{{ order.get_product_profit|three_digits_toman }}</p>
+                </div>
+                {% if order.discount_code %}
+                    <div class="col-span-12 md:col-span-6 xl:col-span-4 text-center">
+                        <p class="text-sm text-gray-500">کد تخفیف</p>
+                        <p class="line-clamp-1 font-DanaDemiBold text-sm text-slate-800 dark:text-slate-200">{{ order.discount_code.code }}</p>
+                    </div>
+                    <div class="col-span-12 md:col-span-6 xl:col-span-4 text-center">
+                        <p class="text-sm text-gray-500">مقدار کد تخفیف</p>
+                        <p class="line-clamp-1 font-DanaDemiBold text-sm text-slate-800 dark:text-slate-200">{{ order.get_discount_profit|three_digits_toman }}</p>
+                    </div>
+                {% endif %}
+                <div class="col-span-12 md:col-span-6 xl:col-span-4 text-center">
+                    <p class="text-sm text-gray-500">سود شما از این خرید</p>
+                    <p class="line-clamp-1 font-DanaDemiBold text-sm text-slate-800 dark:text-slate-200">{{ order.get_final_profit|three_digits_toman }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col shadow rounded-lg p-4 dark:bg-gray-800 bg-white mt-5">
+            <span class="flex items-center gap-x-2">
+                <img src="/static/images/svg/status-delivered.svg" class="w-10" alt="">
+                <h2 class="font-DanaMedium text-lg">محتویات سفارش :</h2>
+            </span>
+            <div class="mt-8">
+                <div class="flex flex-wrap gap-6">
+                    {% for item in items %}
+                        <div class="w-1/4 flex-shrink-0">
+                            <img class="w-full h-20 border border-gray-200 dark:border-white/20 rounded"
+                                 src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+                            <ul class="flex flex-col gap-y-2 font-DanaMedium text-gray-600 dark:text-gray-200 mt-5">
+                                <li>
+                                    <p class="text-sm">{{ item.product.title }}</p>
+                                </li>
+                                <li>
+                                    <p class="text-sm">{{ item.final_price|three_digits }} تومان</p>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

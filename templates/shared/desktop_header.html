@@ -1,0 +1,185 @@
+<div class="container mt-5 hidden flex-col gap-y-6 lg:flex">
+    <!-- TOPBAR -->
+    <div class="flex-between">
+        <!-- Search Box -->
+        <div class="relative z-20">
+            <!-- INPUT -->
+            <div class="search-btn-open flex gap-x-2 app-border bg-gray-50 dark:bg-gray-700 p-1 rounded-full cursor-pointer ring-blue-400 w-84 transition-all">
+                <svg class="size-6 p-1.5 flex-center text-gray-100 bg-blue-600 rounded-full w-9 h-9">
+                    <use href="#search"></use>
+                </svg>
+                <input placeholder="جستجو در گرگان ابزار..." type="text">
+            </div>
+            <!-- Search Modal -->
+            <div class="search-modal space-y-4">
+                <!-- Result -->
+                <div>
+                    <span class="flex items-center text-sm gap-x-1 text-gray-600 dark:text-gray-200">
+                        <p>نتیجه جستجو : <span class="font-DanaMedium text-blue-400">iphone</span></p>
+                    </span>
+                    <ul class="pt-4 text-gray-500 dark:text-gray-300 flex flex-col gap-y-4 child:flex-between child:cursor-pointer">
+                        <li>
+                            <a href="#" class="flex items-center gap-x-2">
+                                <svg class="size-5">
+                                    <use href="#search"></use>
+                                </svg>
+                                آیفون 14
+                            </a>
+                            <svg class="size-4">
+                                <use href="#arrow-up-right"></use>
+                            </svg>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Trend -->
+                <div class="pt-4">
+                    <span class="flex items-center gap-x-1 text-sm text-gray-500 dark:text-gray-200">
+                        <svg class="size-4">
+                            <use href="#fire"></use>
+                        </svg>
+                        <p>جستجو های پرطرفدار :</p>
+                    </span>
+                    <ul class="w-full flex items-center gap-1.5 mt-3 child:search-modal-list-item">
+                        <li>
+                            <a href="#">#آیفون</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logo -->
+        <a href="{% url 'home_page' %}" class="flex flex-col text-center ml-20">
+            <span class="font-MorabbaMedium text-4xl flex items-center">
+                <span class="text-blue-500">گرگان</span> ابزار
+            </span>
+            <p class="font-DanaMedium text-gray-400"> خرید ابزار آلات صنعتی</p>
+        </a>
+
+        <!--  Action -->
+        <div class="flex items-center gap-x-3">
+            <!-- Account Btn -->
+            {% if not request.user.is_authenticated %}
+                <a href="{% url 'auth_page' %}" class="flex items-center">
+                    <button class="flex-center py-2 px-4 gap-x-2 app-border rounded-full app-hover">
+                        <svg class="size-5">
+                            <use href="#arrow-left-end"></use>
+                        </svg>
+                        <p>ورود | ثبت‌نام</p>
+                    </button>
+                </a>
+            {% else %}
+                <button class="group relative flex-center py-2 px-4 app-border rounded-full app-hover delay-75">
+                    <a href="{% url 'dashboard_view' %}" class="flex items-center gap-x-1">
+                        <svg class="size-5">
+                            <use href="#user"></use>
+                        </svg>
+                        <p>حساب کاربری</p>
+                    </a>
+                    <div class="absolute dark:border-none border border-gray-100 w-52 p-2 bg-white text-gray-900 dark:text-gray-100 flex flex-col gap-y-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:top-12 transition-all delay-100 dark:bg-gray-700 top-20 rounded-lg text-base shadow child:transition-all duration-300 child:py-1.5 child:px-2 z-30 child:rounded-lg child:w-full">
+                        <a href="{% url 'orders_view' %}" class="flex items-center gap-x-2  hover:bg-blue-500 hover:text-gray-100">
+                            <svg class="h-5 w-5">
+                                <use href="#user"></use>
+                            </svg>
+                            سفارشات من
+                        </a>
+                        <a href="{% url 'profile_view' %}" class="flex items-center gap-x-2  hover:bg-blue-500 hover:text-gray-100">
+                            <svg class="h-5 w-5">
+                                <use href="#cog"></use>
+                            </svg>
+                            اطلاعات حساب
+                        </a>
+                        <a href="{% url 'logout' %}"
+                           class="flex items-center gap-x-2  hover:bg-red-500 dark:hover:bg-red-500 hover:text-gray-100">
+                            <svg class="h-5 w-5">
+                                <use href="#arrow-left-end"></use>
+                            </svg>
+                            خروج از حساب
+                        </a>
+                    </div>
+                </button>
+            {% endif %}
+            <!-- Toggle theme -->
+            <button class="toggle-theme flex-center p-2 app-border rounded-full app-hover">
+                <svg class="inline-block dark:hidden size-6">
+                    <use href="#moon"></use>
+                </svg>
+                <svg class="hidden dark:inline size-6">
+                    <use href="#sun"></use>
+                </svg>
+            </button>
+            <!-- Shoping cart -->
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'user_cart_view' %}"
+                   class="flex-center p-2 bg-blue-600 hover:bg-blue-700 transition-all text-gray-100 rounded-full open-cart relative">
+                    <svg class="size-6">
+                        <use href="#shopping-bag"></use>
+                    </svg>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <!-- NAVBAR -->
+    <div class="relative flex-between h-16 bg-gray-900 dark:bg-gray-800 rounded-full text-gray-200 px-10">
+        <!-- MENU -->
+        <ul class="flex items-center gap-x-8">
+            <li class="menu-item">
+                <a href="{% url 'home_page' %}" class="menu-item_link">
+                    صفحه اصلی
+                </a>
+            </li>
+            <!-- MENU ITEM --- Mega Menu -->
+            <li class="menu-item megamenu-link">
+                <a href="" class="menu-item_link flex items-center justify-center gap-x-1">
+                    دسته بندی ها
+                    <svg class="size-4">
+                        <use href="#chevron"></use>
+                    </svg>
+                </a>
+                <div class="megamenu">
+                    <!-- RIGHT MENU -->
+                    <ul class="megamenu_category">
+                        <li class="megamenu_category-item active">
+                            <svg class="w-5 h-5">
+                                <use href="#mobile"></use>
+                            </svg>
+                            <a href="">موبایل</a>
+                        </li>
+                    </ul>
+                    <div class="megamenu_left">
+                        <a href="{% url 'product_list' %}" class="text-blue-400 flex items-center gap-x-0.5 text-sm mb-4">
+                            مشاهده همه
+                            <svg class="size-4 rotate-90">
+                                <use href="#chevron"></use>
+                            </svg>
+                        </a>
+                        <ul class="megamenu_left-item active">
+                            <div class="megamenu_left-menu">
+                                <h2 class="megamenu_left-title">برندهای مختلف :</h2>
+                                <li>
+                                    <a href="shop.html">گوشی آیفون</a>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="menu-item">
+                <a href="{% url 'product_list' %}" class="menu-item_link">
+                    فروشگاه
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{% url 'post_list' %}" class="menu-item_link">
+                    وبلاگ
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{% url 'contact_us_page' %}" class="menu-item_link">
+                    تماس با ما
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,6 +1,7 @@
-<section
-        class="flex flex-col lg:flex-row justify-between items-start gap-4 child:rounded-lg child:bg-white child:dark:bg-gray-800 child:shadow child:p-4 mt-5">
-    {% if items %}
+{% if items %}
+
+    <section
+            class="flex flex-col lg:flex-row justify-between items-start gap-4 child:rounded-lg child:bg-white child:dark:bg-gray-800 child:shadow child:p-4 mt-5">
         <!-- products -->
         <div class="w-full lg:w-3/4 flex flex-col gap-y-8 ">
             <!-- shopping cart header -->
@@ -33,7 +34,19 @@
                 </svg>
             </a>
         </div>
-    {% else %}
-        <p>nothimg</p>
-    {% endif %}
-</section>
+    </section>
+
+{% else %}
+    <section class="flex flex-col items-center justify-center gap-y-3 mt-5">
+        <img class="max-w-60" src="/static/images/svg/empty-cart.svg" alt="">
+        <h1 class="font-DanaDemiBold text-gray-700 dark:text-gray-300 text-2xl mt-2">
+            سبد خرید شما خالی است!
+        </h1>
+        <a class="flex items-center justify-center w-fit text-sky-500" href="{% url 'product_list' %}">
+            مشاهده فروشگاه
+            <svg class="size-4 transition-all rotate-90">
+                <use href="#chevron"></use>
+            </svg>
+        </a>
+    </section>
+{% endif %}
