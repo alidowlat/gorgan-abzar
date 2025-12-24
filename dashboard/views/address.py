@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView
@@ -81,20 +82,34 @@ class AddressUpdateView(LoginRequiredMixin, UpdateView):
         }, status=400)
 
 
+
 @login_required
 def set_default_address(request, pk):
-    if request.method == "POST":
-        try:
-            address = UserAddress.objects.get(pk=pk, user=request.user)
-        except UserAddress.DoesNotExist:
-            return JsonResponse({"status": "error", "message": "آدرس یافت نشد"}, status=404)
+    if request.method != "POST":
+        return JsonResponse({"status": "error"}, status=405)
 
-        # غیر فعال کردن سایر آدرس‌ها
-        UserAddress.objects.filter(user=request.user, is_default=True).update(is_default=False)
+    try:
+        with transaction.atomic():
+            address = UserAddress.objects.select_for_update().get(
+                pk=pk,
+                user=request.user
+            )
 
-        # فعال کردن این آدرس
-        address.is_default = True
-        address.save()
+            UserAddress.objects.filter(
+                user=request.user,
+                is_default=True
+            ).update(is_default=False)
 
-        return JsonResponse({"status": "success", "message": "آدرس پیش‌فرض تغییر کرد"})
-    return JsonResponse({"status": "error", "message": "درخواست نامعتبر"}, status=400)
+            address.is_default = True
+            address.save(update_fields=["is_default"])
+
+    except UserAddress.DoesNotExist:
+        return JsonResponse(
+            {"status": "error", "message": "آدرس یافت نشد"},
+            status=404
+        )
+
+    return JsonResponse({
+        "status": "ok",
+        "default_address_id": address.id
+    })

@@ -8,16 +8,16 @@
         </p>
     </li>
     <li>
-        <p>تخفیف </p>
+        <p>تخفیف کالاها</p>
         <p id="cart-total-profit" class="font-DanaDemiBold flex gap-x-1 text-gray-600 dark:text-gray-300">
             {{ total_profit|three_digits }}
             <span class="hidden xl:flex">تومان</span>
         </p>
     </li>
     <li class="border-t-2 border-dashed border-gray-400 pt-8">
-        <p> مبلغ نهایی :</p>
+        <p> مبلغ نهایی </p>
         <p id="cart-final-price" class="font-DanaDemiBold flex gap-x-1 text-gray-600 dark:text-gray-300 ">
-            {{ final_price|three_digits }}
+            {{ total_after_discount|three_digits }}
             <span class="hidden xl:flex">تومان</span>
         </p>
     </li>

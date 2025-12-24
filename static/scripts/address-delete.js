@@ -67,9 +67,9 @@ function reloadAddressList() {
         });
 }
 
-document.addEventListener('click', function(e){
+document.addEventListener('click', function (e) {
     const btn = e.target.closest('.set-default-btn');
-    if(!btn) return;
+    if (!btn) return;
 
     const addressId = btn.dataset.id;
 
@@ -77,35 +77,63 @@ document.addEventListener('click', function(e){
         method: 'POST',
         headers: {
             'X-CSRFToken': getCookie('csrftoken'),
-        }
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({address_id: addressId})
     })
-    .then(res => res.json())
-    .then(data => {
-        if(data.status === 'success'){
-            // تمام دکمه‌ها و badge های فعال قبلی رو غیرفعال کن
-            document.querySelectorAll('.set-default-btn, .default-badge').forEach(el => {
-                el.classList.remove('bg-green-500', 'text-white');
-                el.classList.add('bg-amber-400', 'text-white');
-                // innerHTML همه رو غیرفعال کن
-                if(el.tagName === 'DIV'){
-                    el.innerHTML = `<p>غیرفعال</p>
-                                    <svg class="size-5">
-                                        <use href="#x-mark"></use>
-                                    </svg>`;
-                    el.classList.add('set-default-btn');
-                    el.dataset.id = el.dataset.id || el.getAttribute('data-id');
-                } else if(el.tagName === 'BUTTON'){
-                    el.querySelector('p').innerText = 'غیرفعال';
-                }
-            });
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                updateDefaultUI(data.default_address_id);
+            }
+        });
+});
 
-            // دکمه انتخاب شده رو فعال کن
-            btn.classList.remove('bg-amber-400');
-            btn.classList.add('bg-green-500', 'text-white');
-            btn.innerHTML = `<p>فعال</p>
-                             <svg class="size-6">
-                                 <use href="#check-badge"></use>
-                             </svg>`;
+function updateDefaultUI(defaultId) {
+    document.querySelectorAll('.address-item').forEach(item => {
+        const id = item.dataset.addressId;
+
+        const badge = item.querySelector('.default-badge');
+        const btn = item.querySelector('.set-default-btn');
+
+        if (String(id) === String(defaultId)) {
+            if (btn) btn.remove();
+
+            if (!badge) {
+                item.querySelector('.flex.justify-between').insertAdjacentHTML(
+                    'beforeend',
+                    `
+                    <div class="default-badge group shadow-xl text-sm md:text-base flex gap-x-1.5 items-center px-2 py-1 md:px-3 text-white bg-green-500 rounded-xl">
+                        <p>فعال</p>
+                        <svg class="size-6">
+                            <use href="#check-badge"></use>
+                        </svg>
+                    </div>
+                    `
+                );
+            }
+        } else {
+            if (badge) badge.remove();
+
+            if (!btn) {
+                item.querySelector('.flex.justify-between').insertAdjacentHTML(
+                    'beforeend',
+                    `
+                    <div class="tooltip">
+                        <button data-id="${id}"
+                                class="set-default-btn group shadow-xl text-sm md:text-base flex gap-x-1.5 items-center px-2 py-1 md:px-3 text-white bg-amber-400 rounded-xl">
+                            <p>غیرفعال</p>
+                            <svg class="size-5">
+                                <use href="#x-mark"></use>
+                            </svg>
+                        </button>
+                        <div class="tooltiptext">
+                            انتخاب به عنوان پیش فرض
+                        </div>
+                    </div>
+                    `
+                );
+            }
         }
     });
-});
+}

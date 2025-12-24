@@ -66,9 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.querySelector(`#item-${itemId}-raw`).textContent =
                     data.item_raw.toLocaleString()
 
-            if (data.final_price !== undefined)
+            if (data.total_after_discount !== undefined)
                 document.querySelector("#cart-final-price").textContent =
-                    data.final_price.toLocaleString() + " تومان"
+                    data.total_after_discount.toLocaleString() + " تومان"
 
             if (data.total_profit !== undefined)
                 document.querySelector("#cart-total-profit").textContent =

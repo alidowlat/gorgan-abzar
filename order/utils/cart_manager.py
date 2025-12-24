@@ -1,7 +1,9 @@
 import json
+from datetime import date
+
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from order.models import Order
+from order.models import Order, DiscountCode, DiscountCodeUser
 
 
 class CartManager:
@@ -132,6 +134,35 @@ class CartManager:
         self.items.delete()
         return {"status": "ok", "order_deleted": True}
 
+    def apply_discount_code(self, user, code):
+        discount = (
+            DiscountCode.objects
+            .filter(
+                code=code,
+                expiration_date__gte=date.today()
+            )
+            .first()
+        )
+
+        if not discount:
+            return False, "کد تخفیف نامعتبر یا منقضی شده است."
+
+        if DiscountCodeUser.objects.filter(
+                user=user,
+                discount_code=discount
+        ).exists():
+            return False, "این کد تخفیف قبلاً استفاده شده است."
+
+        self.order.discount_code = discount
+        self.order.save()
+
+        DiscountCodeUser.objects.create(
+            user=user,
+            discount_code=discount
+        )
+
+        return True, "کد تخفیف با موفقیت اعمال شد."
+
 
 class CartAction:
     def __init__(self, request):
@@ -165,7 +196,7 @@ class CartAction:
             'items': cart_data['items'],
             'total_items': cart_data['total_items'],
             'total_before_discount': cart_data['total_before_discount'],
-            'total_after': cart_data['total_after_discount'],
+            'total_after_discount': cart_data['total_after_discount'],
             'discount_amount': cart_data['discount_amount'],
             'final_price': cart_data['final_price'],
             'total_profit': cart_data['total_profit'],
@@ -185,6 +216,7 @@ class CartAction:
             'item_raw': item_raw,
             'discount_amount': cart_data['discount_amount'],
             'total_before_discount': cart_data['total_before_discount'],
+            'total_after_discount': cart_data['total_after_discount'],
             'final_price': cart_data['final_price'],
             'total_profit': cart_data['total_profit'],
         })
