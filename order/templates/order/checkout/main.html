@@ -122,7 +122,6 @@
                         {% endfor %}
                     </div>
                 </form>
-
                 <div>
                     <span class="flex items-center gap-x-2">
                         <img src="/static/images/svg/status-delivered.svg" class="w-10" alt="svg">
@@ -143,7 +142,8 @@
                                                  style="{% if not item.product.discount_rate %}display:none{% endif %}">
                                                 {{ item.raw_total_price|three_digits }}
                                             </del>
-                                            <p class="font-DanaDemiBold">{{ item.product.final_price|three_digits }} تومان</p>
+                                            <p class="font-DanaDemiBold">{{ item.total_price|three_digits }} تومان</p>
+                                            <p class="text-sm/6">تعداد: {{ item.count }}</p>
                                         </li>
                                     </ul>
                                 </div>
@@ -160,7 +160,7 @@
 
                 <a href="./payment.html"
                    class="w-full mt-4 flex items-center gap-x-1 justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all rounded-lg shadow py-2">
-                    تایید و تکمیل سفارش
+                    تایید و پرداخت
                     <svg class="w-5 h-5">
                         <use href="#shopping-bag"></use>
                     </svg>

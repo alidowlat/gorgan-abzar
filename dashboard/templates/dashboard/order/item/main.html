@@ -83,12 +83,13 @@
                         <div class="w-1/4 flex-shrink-0">
                             <img class="w-full h-20 border border-gray-200 dark:border-white/20 rounded"
                                  src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
-                            <ul class="flex flex-col gap-y-2 font-DanaMedium text-gray-600 dark:text-gray-200 mt-5">
+                            <ul class="flex text-center flex-col gap-y-2 font-DanaMedium text-gray-600 dark:text-gray-200 mt-5 ">
                                 <li>
-                                    <p class="text-sm">{{ item.product.title }}</p>
+                                    <p class="font-DanaDemiBold text-base">{{ item.product.title }}</p>
                                 </li>
                                 <li>
-                                    <p class="text-sm">{{ item.final_price|three_digits }} تومان</p>
+                                    <p class="font-DanaDemiBold">{{ item.product.final_price|three_digits }} تومان</p>
+                                    <p class="text-sm/6">تعداد: {{ item.count }}</p>
                                 </li>
                             </ul>
                         </div>
