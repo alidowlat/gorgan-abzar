@@ -1,50 +1,48 @@
 <div class="container mt-5 hidden flex-col gap-y-6 lg:flex">
     <!-- TOPBAR -->
     <div class="flex-between">
-        <!-- Search Box -->
         <div class="relative z-20">
             <!-- INPUT -->
-            <div class="search-btn-open flex gap-x-2 app-border bg-gray-50 dark:bg-gray-700 p-1 rounded-full cursor-pointer ring-blue-400 w-84 transition-all">
+            <div class="search-btn-open flex gap-x-2 app-border bg-gray-50 dark:bg-gray-700 p-1 rounded-full ring-blue-400 w-84 transition-all">
                 <svg class="size-6 p-1.5 flex-center text-gray-100 bg-blue-600 rounded-full w-9 h-9">
                     <use href="#search"></use>
                 </svg>
-                <input placeholder="جستجو در گرگان ابزار..." type="text">
+                <input data-search-input data-desktop placeholder="جستجو در گرگان ابزار.." type="search" class="cursor-pointer">
             </div>
+
             <!-- Search Modal -->
-            <div class="search-modal space-y-4">
+            <div id="desktopSearchResult" class="search-modal space-y-4 hidden">
                 <!-- Result -->
                 <div>
-                    <span class="flex items-center text-sm gap-x-1 text-gray-600 dark:text-gray-200">
-                        <p>نتیجه جستجو : <span class="font-DanaMedium text-blue-400">iphone</span></p>
-                    </span>
-                    <ul class="pt-4 text-gray-500 dark:text-gray-300 flex flex-col gap-y-4 child:flex-between child:cursor-pointer">
-                        <li>
-                            <a href="#" class="flex items-center gap-x-2">
-                                <svg class="size-5">
-                                    <use href="#search"></use>
-                                </svg>
-                                آیفون 14
-                            </a>
-                            <svg class="size-4">
-                                <use href="#arrow-up-right"></use>
-                            </svg>
-                        </li>
+                    <ul id="searchResult"
+                        class="text-gray-500 dark:text-gray-300 flex flex-col gap-y-4 child:flex-between child:cursor-pointer">
                     </ul>
                 </div>
+
                 <!-- Trend -->
-                <div class="pt-4">
-                    <span class="flex items-center gap-x-1 text-sm text-gray-500 dark:text-gray-200">
-                        <svg class="size-4">
-                            <use href="#fire"></use>
-                        </svg>
-                        <p>جستجو های پرطرفدار :</p>
-                    </span>
-                    <ul class="w-full flex items-center gap-1.5 mt-3 child:search-modal-list-item">
-                        <li>
-                            <a href="#">#آیفون</a>
-                        </li>
-                    </ul>
-                </div>
+                {% if popular_search %}
+                    <div class="border-t dark:border-gray-600 border-gray-600/20">
+                        <span class="flex items-center gap-x-1 mt-4 text-base text-gray-500 dark:text-gray-200">
+                            <svg class="size-5 text-red-600">
+                                <use href="#fire"></use>
+                            </svg>
+                            <p>جستجو های پرطرفدار</p>
+                        </span>
+                        <ul class="w-full flex flex-wrap gap-2 mt-3">
+                            {% for item in popular_search %}
+                                <li class="max-w-max">
+                                    <a href="#"
+                                       class="popular-search-item flex border dark:border-gray-600 border-gray-600/20 rounded-2xl px-2 py-1 text-sm">
+                                        <p class="mr-1">{{ item.name }}</p>
+                                        <svg class="size-4 rotate-90">
+                                            <use href="#chevron"></use>
+                                        </svg>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
         </div>
 

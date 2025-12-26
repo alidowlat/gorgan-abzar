@@ -8,6 +8,7 @@ from config import settings
 urlpatterns = [
     path('ga-moazzen-manager/', admin.site.urls),
     path('', include('home.urls')),
+    path('', include('search.urls')),
     path('', include('core.urls')),
     path('auth/', include('accounts.urls')),
     path('blog/', include('blog.urls')),
@@ -16,7 +17,6 @@ urlpatterns = [
     path('products/', include('product.urls')),
     path('contact-us/', include('contact.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-
 ]
 
 django.conf.urls.handler404 = home.views.handler_404

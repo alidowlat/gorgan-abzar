@@ -4,6 +4,9 @@ from django.views.generic import TemplateView
 
 from core.actions import mark_favorites
 from product.models import Product, ProductCategory, Brand
+from search.models import SearchQuery
+from django.db.models import Count, F
+from django.db.models.functions import Lower
 
 
 class HomeView(TemplateView):
@@ -27,8 +30,25 @@ class HomeView(TemplateView):
 
 
 def site_header_component(request):
-    context = {}
-    return render(request, 'shared/header_comp.html', context)
+    query = request.GET.get('q', '').strip()
+
+    results = []
+    if query and len(query) >= 2:
+        results = list(Product.objects.filter(title__icontains=query).values('title', 'slug', 'image')[:50])
+
+    popular_search = (
+        SearchQuery.objects
+        .annotate(q=Lower('query'))
+        .values(name=F('q'))
+        .annotate(count=Count('id'))
+        .order_by('-count')[:7]
+    )
+
+    return render(request, 'shared/header_comp.html', {
+        'search_results': results,
+        'popular_search': popular_search,
+        'search_query': query,
+    })
 
 
 def site_footer_component(request):

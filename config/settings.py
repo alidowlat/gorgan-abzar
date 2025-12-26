@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'product',
     'contact',
     'reviews',
+    'search',
     'blog',
 
     # libs and packages
