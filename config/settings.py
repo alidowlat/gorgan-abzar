@@ -136,7 +136,7 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = Path('/home/gorganab/public_html/gorganabzar/static')
+STATIC_ROOT = Path('/home/gorganab/public_html/static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = Path('/home/gorganab/public_html/media')
 SECURE_HSTS_SECONDS = 31536000
