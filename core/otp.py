@@ -8,12 +8,45 @@ from django.utils import timezone
 from config.settings import Kavenegar_API
 
 
+def send_sms_order(mobile, tracking_code):
+    mobile = [mobile, ]
+    try:
+        api = KavenegarAPI(config("KAVENEGAR_API"))
+        params = {
+            'receptor': mobile,
+            'template': 'ordersuccess',
+            'token': tracking_code,
+        }
+        response = api.verify_lookup(params)
+    except APIException as e:
+        print(e)
+    except HTTPException as e:
+        print(e)
+
+
+def send_otp(mobile, otp):
+    mobile = [mobile, ]
+    try:
+        api = KavenegarAPI(config("KAVENEGAR_API"))
+        params = {
+            'receptor': mobile,
+            'template': 'verifyuser',
+            'token': otp,
+        }
+        response = api.verify_lookup(params)
+    except APIException as e:
+        print(e)
+    except HTTPException as e:
+        print(e)
+
+
 def get_random_otp(len=5):
     return ''.join(secrets.choice('0123456789') for _ in range(len))
 
 
 class OTPTooSoon(Exception):
     pass
+
 
 def set_user_otp(user, otp_length=5, otp_valid_seconds=120):
     now = timezone.now()
@@ -46,38 +79,6 @@ def send_tracking_code_sms(mobile, tracking_code):
             'receptor': mobile,
             'template': 'order',
             'token': tracking_code,
-        }
-        response = api.verify_lookup(params)
-    except APIException as e:
-        print(e)
-    except HTTPException as e:
-        print(e)
-
-
-def send_sms_order(mobile, tracking_code):
-    mobile = [mobile, ]
-    try:
-        api = KavenegarAPI(config("KAVENEGAR_API"))
-        params = {
-            'receptor': mobile,
-            'template': 'order',
-            'token': tracking_code,
-        }
-        response = api.verify_lookup(params)
-    except APIException as e:
-        print(e)
-    except HTTPException as e:
-        print(e)
-
-
-def send_otp(mobile, otp):
-    mobile = [mobile, ]
-    try:
-        api = KavenegarAPI(config("KAVENEGAR_API"))
-        params = {
-            'receptor': mobile,
-            'template': 'verify',
-            'token': otp,
         }
         response = api.verify_lookup(params)
     except APIException as e:

@@ -25,7 +25,7 @@ def auth_view(request):
 
             try:
                 otp = set_user_otp(user)
-                # send_otp(user.phone_number, otp)
+                send_otp(user.phone_number, otp)
             except OTPTooSoon as e:
                 messages.error(request, str(e))
                 return redirect('verify_page')
