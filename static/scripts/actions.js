@@ -28,12 +28,11 @@ document.addEventListener('click', e => {
 
     const productId = btn.dataset.productId;
     const svg = btn.querySelector('svg');
-    const csrfToken = document.getElementById('csrf-token').value;
 
     fetch('/products/toggle-favorite', {
         method: 'POST',
         headers: {
-            'X-CSRFToken': csrfToken,
+            'X-CSRFToken': getCookie('csrftoken'),
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: new URLSearchParams({product_id: productId})
