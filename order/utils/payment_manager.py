@@ -1,8 +1,6 @@
 import pytz
 import requests
 from decouple import config
-
-from config import settings
 from order.models import Order, DiscountCodeUser
 
 MERCHANT = config('ZP_API')
