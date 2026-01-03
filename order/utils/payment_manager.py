@@ -63,10 +63,10 @@ class StockService:
 class PaymentService:
     @staticmethod
     def request_payment(amount, order):
-        buyer_name = f"{order.user.phone_number}"
+        buyer_number = f"{order.user.phone_number}"
         total_items = sum(item.count for item in order.items.all())
 
-        description = f"{buyer_name} - {total_items} کالا"
+        description = f"{buyer_number} - {total_items} Product(s)"
         print(description)
         data = {
             "merchant_id": MERCHANT,
