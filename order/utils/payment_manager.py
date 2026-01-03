@@ -5,7 +5,7 @@ from decouple import config
 from config import settings
 from order.models import Order, DiscountCodeUser
 
-MERCHANT = settings.Kavenegar_API
+MERCHANT = config('ZP_API')
 ZP_API_REQUEST = config('ZP_API_REQUEST')
 ZP_API_VERIFY = config('ZP_API_VERIFY')
 ZP_API_STARTPAY = config('ZP_API_STARTPAY')
