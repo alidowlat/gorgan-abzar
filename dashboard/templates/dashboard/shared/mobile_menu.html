@@ -17,7 +17,7 @@
             <div class="flex items-center gap-x-3">
                 <img src="/static/images/svg/user.png" class="size-10 ring-2 ring-gray-400/20 rounded-full" alt="avatar">
                 <span class="flex flex-col gap-y-2">
-                    <p class="font-DanaMedium text-lg">{{ request.user.get_full_name }}</p>
+                    <p class="font-DanaMedium text-lg">{{ request.user.get_full_name|default:request.user.phone_number }}</p>
                     <p class="text-gray-400">{{ request.user.phone_number }}</p>
                 </span>
             </div>

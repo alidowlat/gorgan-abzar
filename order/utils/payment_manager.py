@@ -63,7 +63,7 @@ class StockService:
 class PaymentService:
     @staticmethod
     def request_payment(amount, order):
-        buyer_name = f"{order.user.get_full_name()} - {order.user.phone_number}" if order.user.get_full_name() else f"{order.user.phone_number}"
+        buyer_name = f"{order.user.phone_number}"
         total_items = sum(item.count for item in order.items.all())
 
         description = f"{buyer_name} - {total_items} کالا"
