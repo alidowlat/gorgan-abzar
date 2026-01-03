@@ -66,7 +66,7 @@ class PaymentService:
         buyer_number = f"{order.user.phone_number}"
         total_items = sum(item.count for item in order.items.all())
 
-        description = f"{buyer_number} - {total_items} Product(s)"
+        description = f"{buyer_number} - {total_items} Item(s)"
         print(description)
         data = {
             "merchant_id": MERCHANT,
