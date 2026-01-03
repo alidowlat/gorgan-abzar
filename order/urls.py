@@ -8,4 +8,8 @@ urlpatterns = [
     path('cart-remove', views.cart_remove, name='cart_remove'),
     path('cart-clear', views.cart_clear, name='cart_clear'),
     path('checkout', views.CheckoutView.as_view(), name='checkout_view'),
+    path('payment-request', views.payment_request, name='payment_request'),
+    path('payment-verify', views.verify_payment, name='payment_verify'),
+    path("payment-status/<str:tracking_code>/", views.payment_status, name="payment_status"),
+    path("payment-status/", views.payment_status, name="payment_status"),
 ]

@@ -80,7 +80,6 @@
                 </div>
                 <form method="post">
                     {% csrf_token %}
-
                     <div>
                         <label class="block text-lg font-DanaDemiBold text-gray-800 dark:text-gray-300">
                             کد تخفیف
@@ -114,10 +113,16 @@
                         </div>
 
                         {% for message in messages %}
-                            {% if 'error' in message.tags %}
-                                <p class="mt-2 text-sm text-red-500">{{ message }}</p>
-                            {% elif 'success' in message.tags %}
-                                <p class="mt-2 text-sm text-green-500">{{ message }}</p>
+                            {% if 'discount' in message.tags %}
+                                {% if 'error' in message.tags %}
+                                    <p class="mt-2 text-sm text-red-500">
+                                        {{ message }}
+                                    </p>
+                                {% elif 'success' in message.tags %}
+                                    <p class="mt-2 text-sm text-green-500">
+                                        {{ message }}
+                                    </p>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -158,7 +163,7 @@
                 <!-- PRICE -->
                 {% include 'order/includes/checkout_box.html' %}
 
-                <a href="./payment.html"
+                <a href="{% url 'payment_request' %}"
                    class="w-full mt-4 flex items-center gap-x-1 justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all rounded-lg shadow py-2">
                     تایید و پرداخت
                     <svg class="w-5 h-5">

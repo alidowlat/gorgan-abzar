@@ -10,6 +10,14 @@ import os
 
 register = template.Library()
 
+@register.filter(name='show_jalali_datetime')
+def show_jalali_datetime(value):
+    if not value:
+        return ''
+    value = timezone.localtime(value)
+    jdt = jdatetime.datetime.fromgregorian(datetime=value)
+    return jdt.strftime('%Y/%m/%d - %H:%M')
+
 
 @register.filter
 def time_ago(value):

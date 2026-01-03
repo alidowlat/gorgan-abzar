@@ -49,22 +49,45 @@ class CheckoutView(LoginRequiredMixin, View):
                 order.discount_code = None
                 order.save()
 
-            messages.success(request, "کد تخفیف حذف شد.")
+            messages.success(
+                request,
+                "کد تخفیف حذف شد.",
+                extra_tags="discount"
+            )
             return redirect("checkout_view")
 
         form = DiscountForm(request.POST)
         if not form.is_valid():
-            messages.error(request, "کد تخفیف نامعتبر و یا منقضی شده است.")
+            messages.error(
+                request,
+                "کد تخفیف نامعتبر یا منقضی شده است.",
+                extra_tags="discount"
+            )
             return redirect("checkout_view")
 
         if order.discount_code:
-            messages.error(request, "کد تخفیف قبلاً اعمال شده است.")
+            messages.error(
+                request,
+                "کد تخفیف قبلاً اعمال شده است.",
+                extra_tags="discount"
+            )
             return redirect("checkout_view")
 
         success, message = cart.apply_discount_code(
             user=request.user,
             code=form.cleaned_data["discount_code"]
         )
-        messages.success(request, message) if success else messages.error(request, message)
 
+        if success:
+            messages.success(
+                request,
+                message,
+                extra_tags="discount"
+            )
+        else:
+            messages.error(
+                request,
+                message,
+                extra_tags="discount"
+            )
         return redirect("checkout_view")

@@ -495,43 +495,57 @@
             </div>
             <!-- PRICE & ADD TO CART BOX -->
             <div class="w-full lg:w-1/4 lg:sticky top-5 flex flex-col gap-y-6">
-                <!-- PRICE -->
-                <div class="flex justify-center gap-x-4">
-                    {% if product.discount_rate %}
-                        <del class="mt-1">{{ product.price|three_digits }}</del>
+                {% if product.is_active %}
+                    <!-- PRICE -->
+                    <div class="flex justify-center gap-x-4">
+                        {% if product.discount_rate %}
+                            <del class="mt-1">{{ product.price|three_digits }}</del>
+                            <div class="flex gap-x-1">
+                                <p class="text-2xl font-DanaDemiBold">{{ product.final_price|three_digits }}</p>
+                                <p class="mt-1">تومان</p>
+                            </div>
+                            <span class="bg-blue-500 rounded-2xl px-3 pt-1">{{ product.discount_rate }}%</span>
+                        {% else %}
+                            <div class="flex gap-x-1">
+                                <p class="text-2xl font-DanaDemiBold">{{ product.price|three_digits }}</p>
+                                <p class="mt-1">تومان</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <button class="w-full flex items-center justify-between gap-x-1 rounded-lg border border-gray-200 dark:border-white/20 py-2 px-3">
+                        <svg class="w-6 h-6 increment text-green-600">
+                            <use href="#plus"></use>
+                        </svg>
+                        <input type="number" name="countInput" id="countInput" min="1" max="20" value="1"
+                               class="custom-input mr-4 text-lg bg-transparent">
+                        <svg class="w-6 h-6 decrement text-red-500">
+                            <use href="#minus"></use>
+                        </svg>
+                    </button>
+                    <button class="w-full flex items-center gap-x-1 justify-center dark:bg-gray-900 dark:text-gray-400  bg-gray-100 transition-all rounded-lg py-2 px-2 xl:px-3 font-DanaMedium text-sm xl:text-base">
+                        <p>موجود در انبار</p>
+                        <p class=""></p>
+                    </button>
+                    <button id="addToCartBtn" data-product="{{ product.id }}"
+                            class="w-full flex items-center gap-x-1 justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all rounded-lg shadow py-2">
+                        افزودن به سبد
+                        <svg class="w-5 h-5">
+                            <use href="#shopping-bag"></use>
+                        </svg>
+                    </button>
+                {% else %}
+                    <!-- PRICE -->
+                    <div class="flex justify-center gap-x-4">
                         <div class="flex gap-x-1">
-                            <p class="text-2xl font-DanaDemiBold">{{ product.final_price|three_digits }}</p>
+                            <p class="text-2xl font-DanaDemiBold">0</p>
                             <p class="mt-1">تومان</p>
                         </div>
-                        <span class="bg-blue-500 rounded-2xl px-3 pt-1">{{ product.discount_rate }}%</span>
-                    {% else %}
-                        <div class="flex gap-x-1">
-                            <p class="text-2xl font-DanaDemiBold">{{ product.price|three_digits }}</p>
-                            <p class="mt-1">تومان</p>
-                        </div>
-                    {% endif %}
-                </div>
-                <button class="w-full flex items-center justify-between gap-x-1 rounded-lg border border-gray-200 dark:border-white/20 py-2 px-3">
-                    <svg class="w-6 h-6 increment text-green-600">
-                        <use href="#plus"></use>
-                    </svg>
-                    <input type="number" name="countInput" id="countInput" min="1" max="20" value="1"
-                           class="custom-input mr-4 text-lg bg-transparent">
-                    <svg class="w-6 h-6 decrement text-red-500">
-                        <use href="#minus"></use>
-                    </svg>
-                </button>
-                <button class="w-full flex items-center gap-x-1 justify-center dark:bg-gray-900 dark:text-gray-400  bg-gray-100 transition-all rounded-lg py-2 px-2 xl:px-3 font-DanaMedium text-sm xl:text-base">
-                    <p>موجود در انبار</p>
-                    <p class=""></p>
-                </button>
-                <button id="addToCartBtn" data-product="{{ product.id }}"
-                        class="w-full flex items-center gap-x-1 justify-center bg-blue-500 text-white hover:bg-blue-600 transition-all rounded-lg shadow py-2">
-                    افزودن به سبد
-                    <svg class="w-5 h-5">
-                        <use href="#shopping-bag"></use>
-                    </svg>
-                </button>
+                    </div>
+                    <button class="w-full flex items-center gap-x-1 justify-center dark:bg-gray-900 dark:text-gray-400  bg-gray-100 transition-all rounded-lg py-2 px-2 xl:px-3 font-DanaMedium text-sm xl:text-base">
+                        <p>ناموجود</p>
+                        <p class=""></p>
+                    </button>
+                {% endif %}
             </div>
         </section>
 

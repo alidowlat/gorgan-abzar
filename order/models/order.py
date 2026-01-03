@@ -58,6 +58,10 @@ class Order(models.Model):
         auto_now_add=True,
     )
 
+    def generate_tracking_code(self):
+        from order.utils import OrderCalculator
+        return OrderCalculator(self).generate_tracking_code()
+
     def get_status_style(self):
         return ORDER_STATUS_STYLES.get(self.status, {})
 

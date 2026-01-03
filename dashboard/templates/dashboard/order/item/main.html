@@ -28,7 +28,7 @@
             <div class="grid grid-cols-12 mt-6 gap-2 child:p-2 child:h-16 child:bg-gray-100 dark:child:bg-gray-900 child:rounded-lg child:flex child:flex-col child:gap-y-1.5">
                 <div class="col-span-12 md:col-span-6 xl:col-span-4 text-center">
                     <p class="text-sm text-gray-500">تاریخ پرداخت</p>
-                    <p class="line-clamp-1 font-DanaDemiBold text-sm text-slate-800 dark:text-slate-200">{{ order.paid_at|show_date_and_time }}</p>
+                    <p class="line-clamp-1 font-DanaDemiBold text-sm text-slate-800 dark:text-slate-200">{{ order.paid_at|show_jalali_datetime }}</p>
                 </div>
                 <div class="col-span-12 md:col-span-6 xl:col-span-4 text-center">
                     <p class="text-sm text-gray-500">کد پیگیری</p>
