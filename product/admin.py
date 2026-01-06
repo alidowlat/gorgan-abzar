@@ -1,5 +1,8 @@
 from django.contrib import admin
-from product.models import Product, ProductCategory, Brand, Feature, Gallery
+from product.models import Product, ProductCategory, Brand, Feature, Gallery, Favorite, ProductVisit
+
+admin.site.register(ProductVisit)
+admin.site.register(Favorite)
 
 
 class FeatureInline(admin.TabularInline):
@@ -25,7 +28,7 @@ class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ['created_at', 'updated_at']
     fieldsets = (
         ('Information', {
-            'fields': ('title', 'slug', 'image', 'guarantee','description')
+            'fields': ('title', 'slug', 'image', 'guarantee', 'description')
         }),
         ('Price', {
             'fields': ('price', 'discount_rate')
