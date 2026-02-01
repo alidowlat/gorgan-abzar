@@ -43,10 +43,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-    document.querySelector(".increment").onclick = () => {
+    document.querySelector(".increment").addEventListener("click", e => {
+        e.preventDefault();
+        e.stopPropagation();
         input.value = parseInt(input.value) + 1;
-    };
-    document.querySelector(".decrement").onclick = () => {
-        if (input.value > 1) input.value = parseInt(input.value) - 1;
-    }
+    });
+
+    document.querySelector(".decrement").addEventListener("click", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (input.value > 1) {
+            input.value = parseInt(input.value) - 1;
+        }
+    });
 });

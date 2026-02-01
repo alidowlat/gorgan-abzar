@@ -58,17 +58,17 @@ def add_product_to_cart(request):
         if existing_item:
             current_count = existing_item.count
 
+    if product.stock < count:
+        return JsonResponse({
+            "status": "out_of_stock",
+            "text": f"موجودی محصول کافی نیست ({product.stock} عدد موجود است)",
+            "icon": "warning",
+        })
+
     if current_count + count > product.stock:
         return JsonResponse({
             "status": "max_stock_reached",
             "text": f"شما از حداکثر موجودی این کالا ({product.stock} عدد) در سبد خریدتان دارید",
-            "icon": "warning",
-        })
-
-    if product.stock < count:
-        return JsonResponse({
-            "status": "out_of_stock",
-            "text": "موجودی محصول کافی نیست",
             "icon": "warning",
         })
 

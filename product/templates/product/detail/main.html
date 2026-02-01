@@ -436,16 +436,10 @@
                                 {{ product.title }}
                             </p>
                             <div class="flex items-center gap-x-2">
-                                <span class="flex items-center gap-x-1 text-sm">
-                                    <svg class="size-4 text-yellow-400 mb-1.5">
-                                        <use href="#star"></use>
-                                    </svg>
-                                    4.4 <span class="text-gray-300 dark:text-gray-500">(امتیاز 849 خریدار)</span>
+                                <span id="reviews-count"
+                                      class="h-6 bg-slate-100 text-gray-400 dark:bg-slate-700 dark:text-gray-400 flex items-center justify-center rounded-full px-2 text-xs font-DanaMedium pt-1">
+                        ({{ product.reviews.count }} دیدگاه)
                                 </span>
-
-                                <span class="h-6 bg-slate-100 text-gray-400 dark:bg-slate-700 dark:text-gray-400 flex items-center justify-center rounded-full px-2 text-xs font-DanaMedium pt-1">
-                                410 دیدگاه
-                              </span>
                             </div>
                         </div>
                         <!-- Features Box  -->
@@ -512,7 +506,7 @@
                             </div>
                         {% endif %}
                     </div>
-                    <button class="w-full flex items-center justify-between gap-x-1 rounded-lg border border-gray-200 dark:border-white/20 py-2 px-3">
+                    <button type="button" class="w-full flex items-center justify-between gap-x-1 rounded-lg border border-gray-200 dark:border-white/20 py-2 px-3">
                         <svg class="w-6 h-6 increment text-green-600">
                             <use href="#plus"></use>
                         </svg>
@@ -567,24 +561,18 @@
                 </h2>
                 {% with features=product.features.all %}
                     <div class="p-4 my-5 w-full mx-auto flex justify-center items-center gap-x-20">
-                        <ul class="space-y-3 text-gray-500 dark:text-gray-300 lg:w-2/4 child:pt-2">
+                        <ul class="space-y-3 text-gray-500 dark:text-gray-300 lg:w-auto child:pt-2">
                             {% for feature in features %}
-                                <li>{{ feature.key }}</li>
+                                <li class="whitespace-nowrap">{{ feature.key }}</li>
                             {% endfor %}
                         </ul>
-                        <ul class="space-y-3 text-gray-800 dark:text-gray-200 lg:w-2/4 divide-y divide-gray-200 dark:divide-gray-700 font-DanaMedium child:line-clamp-1">
+                        <ul class="space-y-3 text-gray-800 dark:text-gray-200 lg:w-auto divide-y divide-gray-200 dark:divide-gray-700 font-DanaMedium child:line-clamp-1">
                             {% for feature in features %}
-                                <li class="pt-2">{{ feature.value }}</li>
+                                <li class="pt-2 text-sm">{{ feature.value }}</li>
                             {% endfor %}
                         </ul>
                     </div>
                 {% endwith %}
-                <a href="#" class="flex gap-x-1 items-center text-blue-400">
-                    مشاهده بیشتر
-                    <svg class="size-4">
-                        <use href="#chevron-left"></use>
-                    </svg>
-                </a>
             </div>
             <div class="tab-content tab3 w-full hidden">
                 <div class="flex items-center gap-x-2 mb-6">

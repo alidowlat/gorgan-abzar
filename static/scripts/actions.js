@@ -159,10 +159,9 @@ function sendProductReview(productId) {
                 }
 
                 if (data.reviews_count !== undefined) {
-                    const countEl = document.getElementById('reviews-count');
-                    if (countEl) {
-                        countEl.textContent = `(${data.reviews_count} دیدگاه)`;
-                    }
+                    document.querySelectorAll('#reviews-count').forEach(el => {
+                        el.textContent = `(${data.reviews_count} دیدگاه)`;
+                    });
                 }
 
                 if (commentEl) commentEl.value = '';

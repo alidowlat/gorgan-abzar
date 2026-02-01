@@ -40,55 +40,56 @@
             {% for category in categories %}
                 <a href="{% url 'product_list' %}?category={{ category.slug }}" class="group flex">
                     <img src="{% if category.image %}{{ category.image.url }}{% endif %}"
-                         class="w-[100px] h-[100px] lg:w-[120px] lg:h-[120px] object-cover group-hover:grayscale group-hover:opacity-90 duration-300"
-                         alt="{{ category.title }}">
-                    <p class="pt-1 text-sm lg:text-lg line-clamp-1">{{ category.title_en }}</p>
+                         class="w-[100px] h-[100px] lg:w-[120px] lg:h-[120px] rounded-md object-cover group-hover:grayscale group-hover:opacity-90 duration-300"
+                         alt="{{ category.title_en }}">
+                    <p class="pt-1 text-sm lg:text-lg line-clamp-1">{{ category.title }}</p>
                 </a>
             {% endfor %}
         </div>
     </section>
 
-    <!-- AMAZING SLIDER -->
-    <section class="mx-4 lg:container mt-20">
-        <div class="w-full h-80 rounded-xl bg-blue-500 dark:bg-blue-700 p-4 relative">
-            <!-- AmazingSlider products Slider -->
-            <div class="swiper AmazingSlider w-full rounded-xl">
-                <div class="swiper-wrapper">
-                    <!-- item -->
-                    <div class="swiper-slide amazing-card">
-                        <img class="w-28 h-28" src="/static/images/slider/Amazings.svg" alt="">
-
-                        <a href="{% url 'product_list' %}" class="flex items-center gap-x-.5 text-gray-100 cursor-pointer">
-                            <p>مشاهده همه</p>
-                            <svg class="size-4 rotate-90">
-                                <use href="#chevron"></use>
+    {% if discounted_products %}
+        <!-- AMAZING SLIDER -->
+        <section class="mx-4 lg:container mt-20">
+            <div class="w-full h-80 rounded-xl bg-blue-500 dark:bg-blue-700 p-4 relative">
+                <!-- AmazingSlider products Slider -->
+                <div class="swiper AmazingSlider w-full rounded-xl">
+                    <div class="swiper-wrapper">
+                        <!-- item -->
+                        <div class="swiper-slide amazing-card">
+                            <img class="w-28 h-28" src="/static/images/slider/Amazings.svg" alt="sale">
+                            <a href="{% url 'product_list' %}?sort_by=most_discount"
+                               class="flex items-center gap-x-.5 text-gray-100 cursor-pointer">
+                                <p>مشاهده همه</p>
+                                <svg class="size-4 rotate-90">
+                                    <use href="#chevron"></use>
+                                </svg>
+                            </a>
+                        </div>
+                        {% for product in discounted_products %}
+                            {% include 'home/components/discounted_card.html' %}
+                        {% endfor %}
+                        <a href="{% url 'product_list' %}?sort_by=most_discount" class="swiper-slide amazing-card_last">
+                            <svg class="size-10 ">
+                                <use href="#arrow-left-circle"></use>
                             </svg>
+                            <h2>مشاهده همه</h2>
                         </a>
                     </div>
-                    {% for product in discounted_products %}
-                        {% include 'home/components/discounted_card.html' %}
-                    {% endfor %}
-                    <a href="{% url 'product_list' %}?sort_by=most_discount" class="swiper-slide amazing-card_last">
-                        <svg class="size-10 ">
-                            <use href="#arrow-left-circle"></use>
-                        </svg>
-                        <h2>مشاهده همه</h2>
-                    </a>
                 </div>
+                <button class="slider-navigate_btn absolute right-1 top-36 border dark:border-gray-700 border-gray-200 AmazingSlider-prev-slide z-10">
+                    <svg class="size-6 -rotate-90">
+                        <use href="#chevron"></use>
+                    </svg>
+                </button>
+                <button class="slider-navigate_btn absolute left-1 top-36 border dark:border-gray-700 border-gray-200 AmazingSlider-next-slide z-10">
+                    <svg class="size-6 rotate-90">
+                        <use href="#chevron"></use>
+                    </svg>
+                </button>
             </div>
-            <button class="slider-navigate_btn absolute right-1 top-36 border dark:border-gray-700 border-gray-200 AmazingSlider-prev-slide z-10">
-                <svg class="size-6 -rotate-90">
-                    <use href="#chevron"></use>
-                </svg>
-            </button>
-            <button class="slider-navigate_btn absolute left-1 top-36 border dark:border-gray-700 border-gray-200 AmazingSlider-next-slide z-10">
-                <svg class="size-6 rotate-90">
-                    <use href="#chevron"></use>
-                </svg>
-            </button>
-        </div>
-
-    </section>
+        </section>
+    {% endif %}
 
     <!-- Latest products -->
     <section class="mx-4 lg:container mt-10 lg:mt-20">
