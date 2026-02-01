@@ -2,7 +2,7 @@
 <div class="group article-box">
     <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
     <div class="relative overflow-hidden rounded-lg">
-        <img src="{{ post.image.url }}" class="article-box_img" alt="">
+        <img src="{{ post.image.url }}" class="article-box_img" alt="svg">
         <div class="absolute opacity-0 left-0 top-0 bottom-0 right-0 bg-black/60 flex items-center justify-center group-hover:opacity-100 duration-300 transition-all rounded-bl-3xl rounded-tr-3xl">
             <a href="{{ post.get_absolute_url }}"
                class="flex items-center px-2 py-1 gap-x-1 font-DanaMedium rounded-lg border-2 border-white text-white">
