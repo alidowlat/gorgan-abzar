@@ -208,7 +208,7 @@
                     <!-- PRODUCT ITEM -->
                     {% for brand in brands %}
                         <a href="{% url 'product_list' %}?brand={{ brand.slug }}" class="swiper-slide brand-card group">
-                            <img src="{% if brand.image %}{{ brand.image.url }}{% endif %}" alt="{{ brand.title_en }}">
+                            <img src="{% if brand.logo %}{{ brand.logo.url }}{% endif %}" class="rounded-md" alt="{{ brand.title_en }}">
                         </a>
                     {% endfor %}
                 </div>
