@@ -21,7 +21,7 @@ class HomeView(TemplateView):
             ('featured_products', Product.objects.filter(featured=True, discount_rate__gte=2).order_by('-discount_rate')[:8]),
             ('discounted_products', Product.objects.filter(discount_rate__gte=2).order_by('-discount_rate')[:21]),
             ('categories', ProductCategory.objects.filter(is_active=True).order_by('-id')[:8]),
-            ('brands', Brand.objects.filter(is_active=True).order_by('-id')[:8]),
+            ('brands', Brand.objects.filter(is_active=True, order__gte=1).order_by('-order')[:8]),
             ('posts', Post.objects.filter(is_active=True).annotate(visit_count=Count('visits', distinct=True)).order_by('-id')[:8]),
         ]
         for field_name, queryset in model_fields:
