@@ -7,6 +7,30 @@
 
 {% block extra_header %}
     <link rel="stylesheet" href="/static/css/swiper-bundle.css">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": "{{ product.title }}",
+          "description": "{{ product.description|escapejs }}",
+          "sku": "{{ product.slug }}",
+          "image": [
+            "{{ request.scheme }}://{{ request.get_host }}{{ product.image.url }}"
+          ],
+          "brand": {
+            "@type": "Brand",
+            "name": "{{ product.brand.title }}",
+            "alternateName": "{{ product.brand.title_en }}"
+          },
+          "offers": {
+            "@type": "Offer",
+            "url": "{{ request.build_absolute_uri }}",
+            "priceCurrency": "IRR",
+            "price": "{{ product.final_price }}",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -332,7 +356,7 @@
                         <span class="open-sliderModal">
                             <img src="{% if product.image %}{{ product.image.url }}{% endif %}"
                                  class="cursor-pointer object-cover border-2 dark:border-gray-700 rounded-md"
-                                 alt="">
+                                 alt="svg">
                         </span>
                         {% include 'product/detail/components/gallery.html' %}
                     </div>
@@ -351,7 +375,7 @@
                                  aria-live="polite">
                                 {% for product in product.galleries.all %}
                                     <div class="swiper-slide">
-                                        <img src="{{ product.image.url }}" alt="">
+                                        <img src="{{ product.image.url }}" alt="{{ product.slug }}">
                                     </div>
                                 {% endfor %}
                             </div>

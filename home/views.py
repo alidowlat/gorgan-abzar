@@ -21,6 +21,7 @@ class HomeView(TemplateView):
             ('categories', ProductCategory.objects.filter(is_active=True, order__gte=1, image__isnull=False).order_by('order')[:7]),
             ('brands', Brand.objects.filter(is_active=True, order__gte=1, logo__isnull=False).order_by('order')[:8]),
             ('posts', Post.objects.filter(is_active=True).annotate(visit_count=Count('visits', distinct=True)).order_by('-id')[:8]),
+            ('is_home_page', True)
         ]
         for field_name, queryset in model_fields:
             context[field_name] = queryset
