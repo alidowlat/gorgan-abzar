@@ -9,6 +9,7 @@ class ProductCategory(models.Model):
     title_en = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, default="", blank=True, unique=True, db_index=True)
     image = models.ImageField(upload_to=get_image_upload_to, null=True, blank=True)
+    order = models.PositiveSmallIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
