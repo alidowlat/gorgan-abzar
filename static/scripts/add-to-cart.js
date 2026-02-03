@@ -35,11 +35,11 @@ document.addEventListener("DOMContentLoaded", function () {
         Swal.fire({
             icon: data.icon,
             text: data.text,
-            confirmButtonText: "مشاهده سبد خرید",
+            confirmButtonText: data.confirmButtonText || "مشاهده سبد خرید",
             showCloseButton: true,
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "/orders/cart";
+                window.location.href = data.redirectUrl ||  "/orders/cart";
             }
         });
     });

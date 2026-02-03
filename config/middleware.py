@@ -1,5 +1,6 @@
 from django.http import HttpResponseNotFound
 from django.urls import resolve
+from home.views import handler_404
 
 
 class AdminRestrictMiddleware:
@@ -10,7 +11,7 @@ class AdminRestrictMiddleware:
         resolver = resolve(request.path_info)
         if resolver.app_name == 'admin':
             if not request.user.is_authenticated or not (request.user.is_staff or request.user.is_superuser):
-                return HttpResponseNotFound("404 Not Found")
+                return handler_404(request, exception=None)
         return self.get_response(request)
 
 

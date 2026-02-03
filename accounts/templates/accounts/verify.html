@@ -71,8 +71,9 @@
             <p class="mb-2 text-gray-800 dark:text-gray-100 font-DanaMedium text-lg">کد تایید را وارد کنید</p>
             <form id="otp-form" method="post">
                 {% csrf_token %}
-                <label class="flex text-sm">کد تایید ارسال شده به شماره موبایل <p class="text-blue-500 px-1">{{ phone_number }}</p> را
-                    وارد کنید</label>
+                <label class="flex text-sm whitespace-nowrap">کد تایید ارسال شده به شماره موبایل <p
+                        class="text-blue-500 px-1">{{ phone_number }}</p> را
+                    وارد کنید.</label>
 
                 <div dir="ltr" class="flex items-center justify-between gap-4 mt-5">
                     <input type="text" class="otp-input" maxlength="1"/>

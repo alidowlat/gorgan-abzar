@@ -1,7 +1,5 @@
-from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from django.views.generic import TemplateView
-
 from blog.models import Post
 from core.actions import mark_favorites
 from product.models import Product, ProductCategory, Brand
@@ -17,11 +15,11 @@ class HomeView(TemplateView):
         context = super(HomeView, self).get_context_data(**kwargs)
 
         model_fields = [
-            ('latest_products', Product.objects.all().order_by('-created_at')[:8]),
+            ('latest_products', Product.objects.filter(is_active=True, is_stock=True).order_by('-created_at')[:8]),
             ('featured_products', Product.objects.filter(featured=True, discount_rate__gte=2).order_by('-discount_rate')[:8]),
             ('discounted_products', Product.objects.filter(discount_rate__gte=2).order_by('-discount_rate')[:21]),
-            ('categories', ProductCategory.objects.filter(is_active=True).order_by('-id')[:8]),
-            ('brands', Brand.objects.filter(is_active=True, order__gte=1).order_by('order')[:8]),
+            ('categories', ProductCategory.objects.filter(is_active=True, order__gte=1, image__isnull=False).order_by('order')[:7]),
+            ('brands', Brand.objects.filter(is_active=True, order__gte=1, logo__isnull=False).order_by('order')[:8]),
             ('posts', Post.objects.filter(is_active=True).annotate(visit_count=Count('visits', distinct=True)).order_by('-id')[:8]),
         ]
         for field_name, queryset in model_fields:
@@ -44,13 +42,30 @@ def site_header_component(request):
         .annotate(q=Lower('query'))
         .values(name=F('q'))
         .annotate(count=Count('id'))
-        .order_by('-count')[:7]
+        .order_by('-count')
+        [:7]
+    )
+
+    categories = (
+        ProductCategory.objects
+        .filter(is_active=True, order__gte=1, image__isnull=False)
+        .order_by('order')
+        [:7]
+    )
+
+    brands = (
+        Brand.objects
+        .filter(is_active=True, order__gte=1, logo__isnull=False)
+        .order_by('order')
+        [:7]
     )
 
     return render(request, 'shared/header_comp.html', {
+        'search_query': query,
         'search_results': results,
         'popular_search': popular_search,
-        'search_query': query,
+        'categories': categories,
+        'brands': brands,
     })
 
 
@@ -60,4 +75,4 @@ def site_footer_component(request):
 
 
 def handler_404(request, exception):
-    return HttpResponseNotFound('<h1>404</h1>')
+    return render(request, 'home/404.html')

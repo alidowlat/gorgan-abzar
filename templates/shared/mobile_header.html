@@ -10,7 +10,7 @@
         <div class="mobile-menu z-50 flex flex-col">
             <!--  MENU MOBILE header -->
             <div class="flex w-full items-center justify-between border-b-normal pb-4">
-                <a href="{% url 'home_page' %}" class="text-xl flex font-MorabbaMedium">
+                <a href="{% url 'home_page' %}" class="text-3xl flex font-MorabbaMedium">
                     <span class="text-blue-500">گرگان</span>ابزار
                 </a>
                 <button class="close-menu-mobile">
@@ -26,50 +26,54 @@
                         <svg class="size-5">
                             <use href="#squares"></use>
                         </svg>
-                        <a href="#">دسته بندی ها</a>
+                        <a href="#">دسته بندی و برند ها</a>
                     </span>
                     <!-- MENU CATEGORY SLIDE -->
-                    <div class="category-slide">
+                    <div class="category-slide justify-center">
                         <div class=" w-full border-b-normal pb-4">
                             <span class="close-category-slide flex items-center gap-x-1 cursor-pointer">
                                 <svg class="size-4">
                                     <use href="#arrow"></use>
                                 </svg>
-                                دسته بندی ها
+                                دسته بندی و برند ها
                             </span>
                         </div>
-                        <ul class="child:flex pt-4 child:cursor-pointer space-y-2">
-                            <li>
-                                <div class="relative open-detail-category">
-                                    <span class="mobile-menu-category-badge">
-                                        موبایل
-                                    </span>
-                                    <img src="/static/images/category/1.webp" class="h-28 w-full object-cover rounded" alt="">
-                                </div>
-                                <!-- Mobile SLIDE -->
-                                <div class="detail-category">
-                                    <span class="close-detail-category flex-center gap-x-1 mx-4 bg-gray-100 dark:bg-gray-900 rounded p-2 cursor-pointer">
-                                        موبایل
-                                        <svg class="size-4">
-                                            <use href="#arrow"></use>
-                                        </svg>
-                                    </span>
-                                    <ul class="mt-5 flex flex-col child:py-3 divide-y-2 dark:divide-gray-700 child:px-4">
-                                        <li>
-                                            <span class="flex group items-center justify-between open-submenu">
-                                                <a href="#">گوشی‌های هوشمند</a>
-                                                <svg class="size-4 rotate-90">
-                                                    <use href="#chevron"></use>
-                                                </svg>
+                        {% if categories %}
+                            <ul class="child:flex pt-4 child:cursor-pointer space-y-2 border-b-normal pb-4">
+                                {% for category in categories %}
+                                    <a href="{% url 'product_list' %}?category={{ category.slug }}" class="justify-center">
+                                        <li class="justify-center">
+                                            <div class="relative">
+                                            <span class="mobile-menu-category-badge">
+                                                {{ category.title }}
                                             </span>
-                                            <ul class="menu-category-submenu child:list-disc child-hover:mr-2 child:transition-all child:duration-300">
-                                                <li href="">آیفون</li>
-                                            </ul>
+                                                <img src="{{ category.image.url }}"
+                                                     class="h-28 w-full object-cover rounded"
+                                                     alt="{{ category.slug }}">
+                                            </div>
                                         </li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
+                                    </a>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if brands %}
+                            <ul class="child:flex pt-4 child:cursor-pointer space-y-2 border-t-normal pt-4">
+                                {% for brand in brands %}
+                                    <a href="{% url 'product_list' %}?brand={{ brand.slug }}" class="justify-center">
+                                        <li>
+                                            <div class="relative">
+                                            <span class="mobile-menu-brand-badge">
+                                                {{ brand.title }}
+                                            </span>
+                                                <img src="{{ brand.logo.url }}"
+                                                     class="h-28 w-full object-cover rounded"
+                                                     alt="{{ brand.slug }}">
+                                            </div>
+                                        </li>
+                                    </a>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     </div>
                 </li>
                 <li class="mobile-menu-item">
@@ -178,35 +182,47 @@
     </div>
     <!-- bottom Navbar-->
     <ul class="bottom-navbar">
-        <li class="dark:text-sky-400 text-blue-500 font-DanaMedium">
+
+        <button onclick="window.location.href='{% url 'product_list' %}'" class="dark:text-sky-400 text-blue-500 font-DanaMedium">
             <svg class="size-5">
                 <use href="#home"></use>
             </svg>
-            <a href="{% url 'home_page' %}">خانه</a>
-        </li>
-        <li>
+            <a>خانه</a>
+        </button>
+
+        <button onclick="window.location.href='{% url 'product_list' %}'">
             <svg class="size-5">
                 <use href="#squares"></use>
             </svg>
-            <a href="{% url 'product_list' %}">فروشگاه</a>
-        </li>
-        <li>
+            <a>فروشگاه</a>
+        </button>
+
+        <button onclick="window.location.href='
+                {% if request.user.is_authenticated %}{% url 'user_cart_view' %}{% else %}{% url 'auth_page' %}{% endif %}'">
             <svg class="size-5">
                 <use href="#shopping-bag"></use>
             </svg>
-            <a href="{% if request.user.is_authenticated %}{% url 'user_cart_view' %}{% else %}{% url 'auth_page' %}{% endif %}">
-                سبد خرید
-            </a>
-        </li>
-        <li>
-            <svg class="size-5">
-                <use href="#user"></use>
-            </svg>
-            {% if request.user.is_authenticated %}
-                <a href="{% url 'dashboard_view' %}">حساب من</a>
-            {% else %}
-                <a href="{% url 'auth_page' %}">ورود | ثبت نام</a>
-            {% endif %}
-        </li>
+            <a>سبد خرید</a>
+        </button>
+
+        {% if request.user.is_authenticated %}
+            <button onclick="window.location.href='{% url 'dashboard_view' %}'">
+                <a>
+                    <svg class="size-5">
+                        <use href="#user"></use>
+                    </svg>
+                    <a>حساب کاربری</a>
+                </a>
+            </button>
+        {% else %}
+            <button onclick="window.location.href='{% url 'auth_page' %}'">
+                <a>
+                    <svg class="size-5">
+                        <use href="#user"></use>
+                    </svg>
+                    <a>ورود | ثبت نام</a>
+                </a>
+            </button>
+        {% endif %}
     </ul>
 </div>

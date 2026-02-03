@@ -11,8 +11,10 @@ from django.contrib.auth.decorators import login_required
 
 @ratelimit(key='ip', rate='25/m', method='POST', block=True)
 @require_POST
-@login_required
 def add_product_to_cart(request):
+    if not request.user.is_authenticated:
+        return need_login()
+
     try:
         data = json.loads(request.body)
     except json.JSONDecodeError:
@@ -117,7 +119,9 @@ def need_login():
     return JsonResponse({
         "status": "login_required",
         "icon": "warning",
-        "text": "برای انجام این عملیات ابتدا وارد حساب کاربری شوید"
+        "text": "برای انجام این عملیات ابتدا وارد حساب کاربری شوید",
+        "confirmButtonText": "ورود | ثبت نام",
+        "redirectUrl" : "/auth/"
     })
 
 
