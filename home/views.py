@@ -31,6 +31,13 @@ class HomeView(TemplateView):
         return context
 
 
+def social_links(request):
+    return render(
+        request,
+        'home/social_links.html'
+    )
+
+
 def site_header_component(request):
     query = request.GET.get('q', '').strip()
 

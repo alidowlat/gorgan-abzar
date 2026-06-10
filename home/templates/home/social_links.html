@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta
+            name="description"
+            content="Gorgan Abzar — hand tools, power tools, workshop and industrial equipment."
+    />
+    <title>گرگان ابزار</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            rel="icon"
+            type="image/svg+xml"
+            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='20' fill='%23141820'/%3E%3Cpath d='M32 78V42h12l16 28 16-28h12v36h-10V54l-14 24h-8L42 54v24H32z' fill='%23e8a317'/%3E%3C/svg%3E"
+    />
+    <style>
+        /* ── Design tokens ── */
+        :root {
+            --font-sans: 'Vazirmatn', Tahoma, 'Segoe UI', system-ui, sans-serif;
+            --steel-950: #0c0e12;
+            --steel-900: #141820;
+            --steel-800: #1e2430;
+            --steel-700: #2a3344;
+            --amber-brand: #e8a317;
+            --text-primary: #e8eaed;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --white: #ffffff;
+        }
+
+        /* ── Base ── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            -webkit-tap-highlight-color: transparent;
+            direction: rtl;
+        }
+
+        body {
+            min-height: 100dvh;
+            font-family: var(--font-sans);
+            background-color: var(--steel-950);
+            color: var(--text-primary);
+            direction: inherit;
+            text-align: right;
+        }
+
+        img,
+        svg {
+            display: block;
+            max-width: 100%;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ── Page layout ── */
+        .page {
+            position: relative;
+            min-height: 100dvh;
+            overflow: hidden;
+        }
+
+        .page__bg {
+            pointer-events: none;
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at top, #1e2430 0%, #0c0e12 55%);
+        }
+
+        .page__glow {
+            pointer-events: none;
+            position: absolute;
+            top: -6rem;
+            left: 50%;
+            width: 16rem;
+            height: 16rem;
+            transform: translateX(-50%);
+            border-radius: 9999px;
+            background: color-mix(in srgb, var(--amber-brand) 5%, transparent);
+            filter: blur(64px);
+        }
+
+        .main {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100dvh;
+            max-width: 28rem;
+            margin: 0 auto;
+            padding: 2.5rem 1.25rem;
+        }
+
+        @media (min-width: 40rem) {
+            .main {
+                padding-inline: 1.5rem;
+            }
+        }
+
+        /* ── Header ── */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .header__logo-wrap {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .header__logo-glow {
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem;
+            background: color-mix(in srgb, var(--amber-brand) 20%, transparent);
+            filter: blur(40px);
+        }
+
+        .header__logo {
+            position: relative;
+            width: 6rem;
+            height: 6rem;
+            border-radius: 1rem;
+            border: 1px solid var(--steel-700);
+            background: var(--steel-900);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header__logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header__title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        @media (min-width: 40rem) {
+            .header__title {
+                font-size: 1.875rem;
+            }
+        }
+
+        .header__tagline {
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--amber-brand);
+        }
+
+        .header__description {
+            margin-top: 1rem;
+            max-width: 24rem;
+            font-size: 1rem;
+            line-height: 1.625;
+            color: var(--slate-400);
+        }
+
+        /* ── Social links ── */
+        .social-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 2.5rem;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            min-height: 3.75rem;
+            padding: 1rem 1.25rem;
+            border: 1px solid var(--steel-700);
+            border-radius: 0.75rem;
+            background: var(--steel-900);
+            text-align: start;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-out;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+            background: var(--steel-800);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .social-btn:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--steel-950),
+            0 0 0 4px var(--ring-color, var(--amber-brand));
+        }
+
+        .social-btn__icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.5rem;
+            background: var(--steel-950);
+            box-shadow: 0 0 0 1px var(--steel-700);
+            transition: transform 0.2s ease-out;
+        }
+
+        .social-btn:hover .social-btn__icon {
+            transform: scale(1.05);
+        }
+
+        .social-btn__icon svg,
+        .social-btn__icon img {
+            width: 1.75rem;
+            height: 1.75rem;
+        }
+
+        .social-btn__label {
+            flex: 1;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--white);
+            text-align: start;
+        }
+
+        .social-btn__arrow {
+            margin-inline-start: auto;
+            color: var(--slate-600);
+            font-size: 1.125rem;
+            line-height: 1;
+            transition: transform 0.2s ease-out, color 0.2s ease-out;
+        }
+
+        .social-btn:hover .social-btn__arrow {
+            transform: translateX(-2px);
+            color: var(--slate-400);
+        }
+
+        /* Platform hover accents */
+        .social-btn--instagram:hover {
+            border-color: color-mix(in srgb, #ec4899 40%, transparent);
+            box-shadow: 0 10px 15px -3px color-mix(in srgb, #ec4899 10%, transparent);
+        }
+
+        .social-btn--instagram:focus-visible {
+            --ring-color: color-mix(in srgb, #ec4899 60%, transparent);
+        }
+
+        .social-btn--telegram:hover {
+            border-color: color-mix(in srgb, #38bdf8 40%, transparent);
+            box-shadow: 0 10px 15px -3px color-mix(in srgb, #38bdf8 10%, transparent);
+        }
+
+        .social-btn--telegram:focus-visible {
+            --ring-color: color-mix(in srgb, #38bdf8 60%, transparent);
+        }
+
+        .social-btn--whatsapp:hover {
+            border-color: color-mix(in srgb, #34d399 40%, transparent);
+            box-shadow: 0 10px 15px -3px color-mix(in srgb, #34d399 10%, transparent);
+        }
+
+        .social-btn--whatsapp:focus-visible {
+            --ring-color: color-mix(in srgb, #34d399 60%, transparent);
+        }
+
+        .social-btn--bale:hover {
+            border-color: color-mix(in srgb, #4ade80 40%, transparent);
+            box-shadow: 0 10px 15px -3px color-mix(in srgb, #4ade80 10%, transparent);
+        }
+
+        .social-btn--bale:focus-visible {
+            --ring-color: color-mix(in srgb, #4ade80 60%, transparent);
+        }
+
+        .social-btn--rubika:hover {
+            border-color: color-mix(in srgb, #e879f9 40%, transparent);
+            box-shadow: 0 10px 15px -3px color-mix(in srgb, #e879f9 10%, transparent);
+        }
+
+        .social-btn--rubika:focus-visible {
+            --ring-color: color-mix(in srgb, #e879f9 60%, transparent);
+        }
+
+        /* ── Footer ── */
+        .footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--slate-600);
+        }
+
+        .footer__year {
+            direction: ltr;
+            unicode-bidi: embed;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+    const siteConfig = {
+        companyName: 'گرگان ابزار',
+        tagline: 'ابزار و تجهیزات کارگاهی، دستی و برقی',
+        description: 'برای آن‌هایی که به دنبال کیفیت و کارایی هستند',
+        logoAlt: 'Gorgan Abzar logo',
+        social: {
+            instagram: 'https://www.instagram.com/gorganabzar_com/reels/',
+            telegram: 'https://t.me/Pejmanmoazen',
+            whatsapp: 'https://wa.me/989000000000',
+            bale: 'https://web.bale.ai/',
+            rubika: 'https://rubika.ir/gorganabzar',
+        },
+    }
+
+    const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+  <rect width="120" height="120" rx="20" fill="#141820"/>
+  <path d="M32 78V42h12l16 28 16-28h12v36h-10V54l-14 24h-8L42 54v24H32z" fill="#e8a317"/>
+  <path d="M28 88h64" stroke="#2a3344" stroke-width="4" stroke-linecap="round"/>
+</svg>`
+
+    const icons = {
+        instagram: `<svg viewBox="0 0 24 24" aria-hidden="true">
+    <defs>
+      <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#f58529"/>
+        <stop offset="50%" stop-color="#dd2a7b"/>
+        <stop offset="100%" stop-color="#8134af"/>
+      </linearGradient>
+    </defs>
+    <rect x="2" y="2" width="20" height="20" rx="5" fill="url(#ig-grad)"/>
+    <circle cx="12" cy="12" r="4.2" fill="none" stroke="#fff" stroke-width="1.8"/>
+    <circle cx="17.2" cy="6.8" r="1.2" fill="#fff"/>
+  </svg>`,
+
+        telegram: `<svg viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" fill="#29a9eb"/>
+    <path fill="#fff" d="M17.2 7.4 6.4 11.5c-.9.4-.9.9-.2 1.1l2.7.8 1 3.1c.1.4.3.5.6.5.3 0 .4-.1.6-.4l1.4-1.4 2.9 2.1c.5.4 1 .2 1.1-.7l1.7-8.4c.2-.8-.3-1.1-.8-.9zM9.8 13.1l6.8-4.3c.3-.2.6-.1.4.1l-5.5 5-.2 2.4-.5-3.2z"/>
+  </svg>`,
+
+        whatsapp: `<svg viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" fill="#25d366"/>
+    <path fill="#fff" d="M16.7 14.2c-.3-.1-1.6-.8-1.8-.9-.3-.1-.5-.1-.7.2-.2.3-.8.9-1 .9s-.5 0-1.1-.3c-2.1-.9-3.5-3.1-3.6-3.3-.1-.2 0-.5.2-.6.2-.2.5-.5.6-.7.2-.2.2-.4 0-.6-.1-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.2 2.2 3.4 5.4 4.7.8.3 1.4.5 1.8.6.8.3 1.5.2 2.1.1.6-.1 1.6-.7 1.8-1.3.2-.6.2-1.1.1-1.2-.1-.1-.3-.2-.6-.3z"/>
+    <path fill="#fff" fill-opacity="0.9" d="M12 4.5a7.5 7.5 0 0 0-6.5 11.2L4.5 19.5l3.9-1a7.5 7.5 0 1 0 3.6-14z" opacity="0.15"/>
+  </svg>`,
+
+        bale: `<img src="/static/images/social_svg/bale.ico" alt="" aria-hidden="true" draggable="false" loading="lazy">`,
+
+        rubika: `<img src="/static/images/social_svg/rubika.ico" alt="" aria-hidden="true" draggable="false" loading="lazy">`,
+    }
+
+    const socialLinks = [
+        {platform: 'instagram', label: 'اینستاگرام', ariaLabel: 'صفحه اینستاگرام گرگان ابزار'},
+        {platform: 'telegram', label: 'تلگرام', ariaLabel: 'کانال تلگرام گرگان ابزار'},
+        {platform: 'whatsapp', label: 'واتساپ', ariaLabel: 'ارتباط از طریق واتساپ'},
+        {platform: 'bale', label: 'بله', ariaLabel: 'ارتباط از طریق بله'},
+        {platform: 'rubika', label: 'روبیکا', ariaLabel: 'صفحه روبیکا گرگان ابزار'},
+    ]
+
+    function renderSocialButton({platform, label, ariaLabel}) {
+        const href = siteConfig.social[platform]
+        return `
+    <a
+      href="${href}"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="social-btn social-btn--${platform}"
+      aria-label="${ariaLabel}"
+    >
+      <span class="social-btn__icon" aria-hidden="true">${icons[platform]}</span>
+      <span class="social-btn__label">${label}</span>
+      <span class="social-btn__arrow" aria-hidden="true">←</span>
+    </a>
+  `
+    }
+
+    function renderPage() {
+        const root = document.getElementById('app')
+        if (!root) return
+
+        root.innerHTML = `
+    <div class="page">
+      <div class="page__bg" aria-hidden="true"></div>
+      <div class="page__glow" aria-hidden="true"></div>
+
+      <main class="main">
+        <header class="header">
+          <div class="header__logo-wrap">
+            <div class="header__logo-glow" aria-hidden="true"></div>
+            <div class="header__logo" role="img" aria-label="${siteConfig.logoAlt}">
+              ${LOGO_SVG}
+            </div>
+          </div>
+
+          <h1 class="header__title">${siteConfig.companyName}</h1>
+          <p class="header__tagline">${siteConfig.tagline}</p>
+          <p class="header__description">${siteConfig.description}</p>
+        </header>
+
+        <nav class="social-nav" aria-label="شبکه‌های اجتماعی">
+          ${socialLinks.map(renderSocialButton).join('')}
+        </nav>
+
+        <footer class="footer">
+          <span class="footer__year">© ${new Date().getFullYear()}</span>
+          ${siteConfig.companyName}
+        </footer>
+      </main>
+    </div>
+  `
+    }
+
+    document.addEventListener('DOMContentLoaded', renderPage)
+</script>
+</body>
+</html>
